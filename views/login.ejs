@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <form>
+        <input type="text" id="email-login" name="email" placeholder="Email">
+        <input type="password" id="password-login" name="password" placeholder="Password">
+        <button type="submit" id="login-btn">Login</button>
+    </form>
+
+    <form method="post">
+        <input type="text" name="email" placeholder="Email">
+        <input type="text" name="username" placeholder="Username">
+        <input type="password" name="password" placeholder="Password">
+        <input type="text" name="name" placeholder="Name">
+        <input type="number" name="phone_number" placeholder="Phone">
+        <input type="text" name="address" placeholder="Address">
+        <input type="text" name="city" placeholder="City">
+        <input type="number" name="license_number" placeholder="License Number">
+        <input type="number" name="exp_years" placeholder="EXP YEARS" >
+        <input type="number" name="consultation_fee" placeholder="Consultation Fee">
+        <input type="text" name="specialty" placeholder="Specialty">
+        <button type="submit" id="submit-btn">Signup</button>
+    </form>
+
+    <button id="add-cities">Add cities</button>
+</body>
+<script>
+    document.getElementById('submit-btn').addEventListener('click', function(e) {
+        e.preventDefault();
+        var email = document.getElementsByName('email')[1].value;
+        var username = document.getElementsByName('username')[0].value;
+        var password = document.getElementsByName('password')[1].value;
+        var name = document.getElementsByName('name')[0].value;
+        var phone_number = Number(document.getElementsByName('phone_number')[0].value);
+        var city = document.getElementsByName('city')[0].value;
+        var consultation_fee = Number(document.getElementsByName('consultation_fee')[0].value);
+        var specialty = document.getElementsByName('specialty')[0].value;
+        var address = document.getElementsByName('address')[0].value;
+        var license_number = Number(document.getElementsByName('license_number')[0].value);
+        var exp_years = Number(document.getElementsByName('exp_years')[0].value);
+
+
+        fetch('http://localhost:3000/doctor/signup', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                email: email,
+                username: username,
+                password: password,
+                name: name,
+                phone_number: phone_number,
+                consultation_fee: consultation_fee,
+                specialty: specialty,
+                address: address,
+                city: city,
+                license_number: license_number,
+                exp_years: exp_years
+            })
+        }).
+        then(response => response.json()).
+        then(data => {
+            console.log(data);
+        });
+    });
+
+    document.getElementById('login-btn').addEventListener('click', function(e) {
+        e.preventDefault();
+        var email = document.getElementById('email-login').value;
+        var password = document.getElementById('password-login').value;
+        fetch('http://localhost:3000/doctor/login', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                email: email,
+                password: password
+            })
+        }).
+        then(response => response.json()).
+        then(data => {
+            console.log(data);
+        })
+        .catch(error => console.error("Error logging in: ", error)
+        );
+    });
+
+    document.getElementById('add-cities').addEventListener('click', function(e) {
+        e.preventDefault();
+        fetch('http://localhost:3000/cities/add', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        }).then(response => response.json())
+        .then(data => {
+            console.log(data);
+        });
+    });
+            
+
+</script>
+</html>
