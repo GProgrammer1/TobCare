@@ -1,0 +1,263 @@
+/* MedicalRecords.css */
+.medical-records-container {
+    min-height: 100vh;
+    background-color: #fff;
+    overflow-y: auto; 
+  }
+  
+  .header-section {
+    background-color: #0D9488;
+    padding: 32px 24px;
+    position: relative;
+  }
+  
+  .header-top {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    justify-content: flex-start;
+  }
+  
+  .back-button {
+    background: none;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+  }
+  
+  .header-top h1 {
+    color: white;
+    font-size: 24px;
+    font-weight: 600;
+    margin: 0;
+  }
+  
+  .icon {
+    color: white;
+    width: 24px;
+    height: 24px;
+  }
+  
+  .content-section {
+    background-color: white;
+    border-radius: 32px 32px 0 0;
+    margin-top: -32px;
+    padding: 24px;
+    min-height: calc(100vh - 100px);
+  }
+  
+  .tabs-container {
+    display: flex;
+    justify-content: space-between;
+    background-color: #F3F4F6;
+    border-radius: 12px;
+    padding: 4px;
+    margin-bottom: 24px;
+  }
+  
+  .tab-button {
+    flex: 1;
+    padding: 12px;
+    border: none;
+    background: none;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 500;
+    color: #4B5563;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  
+  .tab-button.active {
+    background-color: white;
+    color: #0D9488;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  }
+  
+  .medical-section {
+    margin-top: 16px;
+  }
+  
+  .section-header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 16px;
+  }
+  
+  .section-icon {
+    color: #0D9488;
+    width: 24px;
+    height: 24px;
+    margin-right: 8px;
+  }
+  
+  .section-header h2 {
+    font-size: 18px;
+    font-weight: 600;
+    color: #111827;
+    margin: 0;
+    flex-grow: 1;
+  }
+  
+  .add-button {
+    background-color: #0D9488;
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 36px;
+    height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: background-color 0.2s;
+  }
+  
+  .add-button:hover {
+    background-color: #0F766E;
+  }
+  
+  .add-icon {
+    width: 20px;
+    height: 20px;
+  }
+  
+  .items-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+  
+  .item-card {
+    background-color: #F9FAFB;
+    padding: 16px;
+    border-radius: 12px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .item-card span {
+    font-size: 16px;
+    color: #1F2937;
+  }
+  
+  .remove-button {
+    background: none;
+    border: none;
+    color: #9CA3AF;
+    cursor: pointer;
+    padding: 4px;
+  }
+  
+  .remove-button:hover {
+    color: #EF4444;
+  }
+  
+  .remove-icon {
+    width: 18px;
+    height: 18px;
+  }
+  
+  .empty-state {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 32px;
+    text-align: center;
+  }
+  
+  .empty-state p {
+    color: #6B7280;
+    margin-bottom: 16px;
+  }
+  
+  .add-empty-button {
+    background-color: #0D9488;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    padding: 10px 16px;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background-color 0.2s;
+  }
+  
+  .add-empty-button:hover {
+    background-color: #0F766E;
+  }
+  
+  /* Modal styles */
+  .modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+  }
+  
+  .modal-container {
+    background-color: white;
+    border-radius: 16px;
+    padding: 24px;
+    width: 90%;
+    max-width: 400px;
+  }
+  
+  .modal-container h3 {
+    margin-top: 0;
+    margin-bottom: 16px;
+    font-size: 18px;
+    font-weight: 600;
+    color: #111827;
+  }
+  
+  .modal-input {
+    width: 100%;
+    padding: 12px 16px;
+    border: 1px solid #E5E7EB;
+    border-radius: 8px;
+    font-size: 16px;
+    margin-bottom: 24px;
+  }
+  
+  .modal-input:focus {
+    outline: none;
+    border-color: #0D9488;
+    box-shadow: 0 0 0 2px rgba(13, 148, 136, 0.2);
+  }
+  
+  .modal-buttons {
+    display: flex;
+    justify-content: flex-end;
+    gap: 12px;
+  }
+  
+  .modal-cancel {
+    padding: 10px 16px;
+    background-color: #F3F4F6;
+    color: #4B5563;
+    border: none;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+  }
+  
+  .modal-add {
+    padding: 10px 16px;
+    background-color: #0D9488;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+  }

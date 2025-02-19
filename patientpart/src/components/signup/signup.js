@@ -1,17 +1,18 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { UserCircle, Mail, Lock, Phone, Stethoscope } from "lucide-react";
+import { UserCircle, Mail, Lock, Phone, Stethoscope, Calendar } from "lucide-react";
 import { IoEyeOffOutline, IoEyeOutline } from "react-icons/io5";
-import { FaCheckCircle } from "react-icons/fa";
+import { FaCheckCircle, FaTint } from "react-icons/fa";
 import "./signup.css";
 
-
 const Signup = () => {
-    const navigate = useNavigate();
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({
     fullName: "",
     email: "",
     phone: "",
+    dob: "",
+    bloodType: "",
     password: "",
     confirmPassword: "",
   });
@@ -80,10 +81,10 @@ const Signup = () => {
                       type="email"
                       name="email"
                       className={`form-input ${isEmailValid(formData.email) ? 'valid' : ''}`}
-                      placeholder="Email Address"
                       value={formData.email}
                       onChange={handleChange}
                       required
+                      placeholder="Email"
                     />
                     {isEmailValid(formData.email) && (
                       <FaCheckCircle className="validation-icon" />
@@ -103,6 +104,46 @@ const Signup = () => {
                       onChange={handleChange}
                       required
                     />
+                  </div>
+                </div>
+
+                {/* Date of Birth Field */}
+                <div className="form-group">
+                  <div className="input-wrapper">
+                    <Calendar className="field-icon" />
+                    <input
+                      type="date"
+                      name="dob"
+                      className="form-input"
+                      value={formData.dob}
+                      onChange={handleChange}
+                      required
+                      placeholder="Date of Birth"
+                    />
+                  </div>
+                </div>
+
+                {/* Blood Type Field */}
+                <div className="form-group">
+                  <div className="input-wrapper">
+                    <FaTint className="field-icon" />
+                    <select
+                      name="bloodType"
+                      className="form-input"
+                      value={formData.bloodType}
+                      onChange={handleChange}
+                      required
+                    >
+                      <option value="">Select Blood Type</option>
+                      <option value="A+">A+</option>
+                      <option value="A-">A-</option>
+                      <option value="B+">B+</option>
+                      <option value="B-">B-</option>
+                      <option value="O+">O+</option>
+                      <option value="O-">O-</option>
+                      <option value="AB+">AB+</option>
+                      <option value="AB-">AB-</option>
+                    </select>
                   </div>
                 </div>
 
@@ -152,23 +193,6 @@ const Signup = () => {
                   </div>
                 </div>
 
-                <div className="form-group">
-                  <div className="password-requirements">
-                    <p>Password must contain:</p>
-                    <ul>
-                      <li className={formData.password.length >= 8 ? 'valid' : ''}>
-                        At least 8 characters
-                      </li>
-                      <li className={/[A-Z]/.test(formData.password) ? 'valid' : ''}>
-                        One uppercase letter
-                      </li>
-                      <li className={/[0-9]/.test(formData.password) ? 'valid' : ''}>
-                        One number
-                      </li>
-                    </ul>
-                  </div>
-                </div>
-
                 <div className="button-group">
                   <button
                     type="button"
@@ -196,15 +220,12 @@ const Signup = () => {
             <p className="register-text">
               Already have an account?{" "}
               <span
-  className="register-link"
-  onClick={() => navigate("/login")}
-  style={{ 
-    cursor: "pointer", 
-   
-  }}
->
-  Sign in
-</span>
+                className="register-link"
+                onClick={() => navigate("/login")}
+                style={{ cursor: "pointer" }}
+              >
+                Sign in
+              </span>
             </p>
           </div>
         </div>
