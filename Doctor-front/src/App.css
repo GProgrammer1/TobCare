@@ -1,0 +1,30 @@
+
+.App-link {
+  color: #61dafb;
+}
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap');
+
+.tobcare-logo {
+  font-family: 'Inter', sans-serif;
+  position: fixed;
+  top: 20px;
+  left: 20px;
+  font-size: 30px;
+  font-weight: bold;
+  color: white;
+  background: #0197A5;
+  padding: 10px 20px;
+  border-radius: 8px;
+}
+
+/* CSS for the toggle link */
+
+@keyframes App-logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
