@@ -15,26 +15,61 @@ const Signup = () => {
     bloodType: "",
     password: "",
     confirmPassword: "",
+    gender: "", // Added gender field
   });
 
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [step, setStep] = useState(1);
+  const [error, setError] = useState(null);
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     setIsLoading(true);
-    setTimeout(() => {
-      setIsLoading(false);
-    }, 1500);
-  };
+    setError(null);
 
-  const isEmailValid = (email) => {
-    return email.includes("@") && email.includes(".");
+    if (formData.password !== formData.confirmPassword) {
+      setError("Passwords do not match.");
+      setIsLoading(false);
+      return;
+    }
+
+    const requestData = {
+      username: formData.username, // Assuming email as username
+      name: formData.fullName,
+      phoneNumber: formData.phone,
+      email: formData.email,
+      password: formData.password,
+      gender: formData.gender, 
+      bloodtype: formData.bloodType,
+      dateOfBirth: formData.dob,
+    };
+
+    try {
+      const response = await fetch('https://zo0of1qvtk.execute-api.us-east-1.amazonaws.com/dev/signup_patient', {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(requestData),
+      });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        navigate("/profile"); // Redirect to login page on success
+      } else {
+        setError(data.message || "Signup failed. Please try again.");
+      }
+    } catch (error) {
+      setError("An error occurred. Please try again.");
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -57,6 +92,8 @@ const Signup = () => {
           </div>
 
           <form onSubmit={handleSubmit}>
+            {error && <p className="error-message">{error}</p>}
+
             {step === 1 ? (
               <>
                 <div className="form-group">
@@ -80,15 +117,28 @@ const Signup = () => {
                     <input
                       type="email"
                       name="email"
-                      className={`form-input ${isEmailValid(formData.email) ? 'valid' : ''}`}
+                      className="form-input"
                       value={formData.email}
                       onChange={handleChange}
                       required
                       placeholder="Email"
                     />
-                    {isEmailValid(formData.email) && (
-                      <FaCheckCircle className="validation-icon" />
-                    )}
+                    {formData.email.includes("@") && <FaCheckCircle className="validation-icon" />}
+                  </div>
+                </div>
+
+                <div className="form-group">
+                  <div className="input-wrapper">
+                    <Mail className="field-icon" />
+                    <input
+                      type="username"
+                      name="username"
+                      className="form-input"
+                      value={formData.username}
+                      onChange={handleChange}
+                      required
+                      placeholder="Username"
+                    />
                   </div>
                 </div>
 
@@ -107,7 +157,6 @@ const Signup = () => {
                   </div>
                 </div>
 
-                {/* Date of Birth Field */}
                 <div className="form-group">
                   <div className="input-wrapper">
                     <Calendar className="field-icon" />
@@ -123,7 +172,6 @@ const Signup = () => {
                   </div>
                 </div>
 
-                {/* Blood Type Field */}
                 <div className="form-group">
                   <div className="input-wrapper">
                     <FaTint className="field-icon" />
@@ -147,11 +195,31 @@ const Signup = () => {
                   </div>
                 </div>
 
-                <button
-                  type="button"
-                  className="login-button"
-                  onClick={() => setStep(2)}
-                >
+                <div className="form-group">
+                  <label>Gender:</label>
+                  <div className="gender-options">
+                    <label>
+                      <input
+                        type="radio"
+                        name="gender"
+                        value="male"
+                        checked={formData.gender === "male"}
+                        onChange={handleChange}
+                      /> Male
+                    </label>
+                    <label>
+                      <input
+                        type="radio"
+                        name="gender"
+                        value="female"
+                        checked={formData.gender === "female"}
+                        onChange={handleChange}
+                      /> Female
+                    </label>
+                  </div>
+                </div>
+
+                <button type="button" className="login-button" onClick={() => setStep(2)}>
                   Continue
                 </button>
               </>
@@ -169,10 +237,7 @@ const Signup = () => {
                       onChange={handleChange}
                       required
                     />
-                    <span
-                      className="toggle-password"
-                      onClick={() => setShowPassword(!showPassword)}
-                    >
+                    <span className="toggle-password" onClick={() => setShowPassword(!showPassword)}>
                       {showPassword ? <IoEyeOutline /> : <IoEyeOffOutline />}
                     </span>
                   </div>
@@ -194,40 +259,16 @@ const Signup = () => {
                 </div>
 
                 <div className="button-group">
-                  <button
-                    type="button"
-                    className="secondary-button"
-                    onClick={() => setStep(1)}
-                  >
+                  <button type="button" className="secondary-button" onClick={() => setStep(1)}>
                     Back
                   </button>
-                  <button
-                    type="submit"
-                    className={`login-button ${isLoading ? 'loading' : ''}`}
-                  >
-                    {isLoading ? (
-                      <div className="loading-spinner"></div>
-                    ) : (
-                      'Create Account'
-                    )}
+                  <button type="submit" className={`login-button ${isLoading ? "loading" : ""}`}>
+                    {isLoading ? <div className="loading-spinner"></div> : "Create Account"}
                   </button>
                 </div>
               </>
             )}
           </form>
-
-          <div className="register-section">
-            <p className="register-text">
-              Already have an account?{" "}
-              <span
-                className="register-link"
-                onClick={() => navigate("/login")}
-                style={{ cursor: "pointer" }}
-              >
-                Sign in
-              </span>
-            </p>
-          </div>
         </div>
       </div>
     </div>

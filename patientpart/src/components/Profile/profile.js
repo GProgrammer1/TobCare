@@ -38,15 +38,9 @@ const ProfilePage = () => {
 
         <div className="menu-container">
           
-          <button className="menu-itemm">
-            <div className="menu-item-left">
-              <Heart className="menu-icon" />
-              <span>History</span>
-            </div>
-            <ChevronRight className="chevron-icon" />
-          </button>
 
-          <button className="menu-item"
+
+          <button className="menu-itemm"
                           onClick={() => navigate('/personal-info')}> {/* Update this line */}
 
             <div className="menu-item-left">

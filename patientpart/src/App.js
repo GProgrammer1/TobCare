@@ -7,6 +7,7 @@ import Profile from './components/Profile/profile'
 import PersonalInfo from './components/personalinfo/PersonalInfo';
 import MedicalRecords from "./components/medicalrecords/medicalrecord";
 import AboutUs from "./components/aboutus/aboutus";
+import CommonPage from "./components/commonpage/commonpage"
 function App() {
   return (
     <Router> {/* Wrap everything in Router */}
@@ -18,6 +19,7 @@ function App() {
           <Route path="/personal-info" element={<PersonalInfo />} />
           <Route path="/medical-records" element={<MedicalRecords/>}/>
           <Route path="./about-us" element={<AboutUs/>}/>
+          <Route path="/commonpage" element={<CommonPage/>}/>
         </Routes>
       </div>
     </Router>

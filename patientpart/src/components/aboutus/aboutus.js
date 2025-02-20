@@ -1,7 +1,7 @@
 import React from 'react';
 import { ArrowLeft, Users, UserCog, Calendar, Search, FileText, Activity, Heart } from 'lucide-react';
 import './aboutus.css';
-
+import logo from './logo.jpg'
 const AboutUs = ({ onBack }) => {
   return (
     <div className="about-us-container">
@@ -16,7 +16,7 @@ const AboutUs = ({ onBack }) => {
 
       <div className="content-sectionn">
         <div className="about-header">
-          <img src="/api/placeholder/80/80" alt="TobCare Logo" className="logo" />
+          <img src={logo} alt="TobCare Logo" className="logo" />
           <h2>TobCare</h2>
           <p className="tagline">Connecting patients with the right doctors across Lebanon</p>
         </div>

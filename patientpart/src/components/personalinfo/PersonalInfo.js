@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { ArrowLeft, Camera, Save } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import './personalinfo.css'
@@ -11,14 +11,45 @@ const PersonalInfo = ({ onBack }) => {
   const [isEditing, setIsEditing] = useState(false);
   const [imagePreview, setImagePreview] = useState(null);
   const [formData, setFormData] = useState({
-    name: 'Hadi Nhayli',
-    email: 'hadi.nhayli@example.com',
-    phone: '+1 234 567 8900',
-    dateOfBirth: '1990-01-01',
-    gender: 'Male',
-    bloodType: 'O+'
+    name: '',
+    email: '',
+    phone: '',
+    dateOfBirth: '',
+    gender: '',
+    bloodType: ''
   });
+  useEffect(() => {
+    const fetchPatientInfo = async () => {
+      const patientId = localStorage.getItem('userId');
+      console.log(patientId);
+      if (!patientId) {
+        console.error('No patientId found in localStorage');
+        return;
+      }
 
+      try {
+        const response = await fetch(`https://zo0of1qvtk.execute-api.us-east-1.amazonaws.com/dev/get_patient_info?patientId=${patientId}`);
+        const data = await response.json();
+
+        if (data.message === 'Patient data fetched successfully') {
+          setFormData({
+            name: data.result.name || '',
+            email: data.result.email || '',
+            phone: data.result.phoneNumber || '',
+            dateOfBirth: data.result.dateOfBirth || '',
+            gender: data.result.gender || '',
+            bloodType: data.result.bloodType || ''
+          });
+        } else {
+          console.error('Error fetching patient info:', data.message);
+        }
+      } catch (error) {
+        console.error('Failed to fetch patient info:', error);
+      }
+    };
+
+    fetchPatientInfo();
+  }, []);
   const handleImageChange = (e) => {
     const file = e.target.files[0];
     if (file) {
