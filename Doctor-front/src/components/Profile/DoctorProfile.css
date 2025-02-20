@@ -1,0 +1,208 @@
+.doctor-profile-container {
+  width: 80%;
+  margin: auto;
+  background: white;
+  backdrop-filter: blur(20px);
+  border-top-left-radius: 24px;
+  padding: 20px;
+  box-shadow: var(--card-shadow);
+  overflow: auto;
+  height: 85vh;
+  margin-top: 15px;
+  bottom: 0;
+  right: 0;
+  position: fixed;
+}
+
+.doctor-profile-container:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.15);
+  }
+
+.profilepage{
+    background: var(--primary-color);
+    margin: 0;
+    padding: 0;
+    height: 100vh;
+    width: 100vw;
+    overflow: hidden;
+}
+
+/* Hide scrollbar but allow scrolling */
+.doctor-profile-container::-webkit-scrollbar {
+    display: none;
+  }
+  
+  .doctor-profile-container {
+    -ms-overflow-style: none;  /* Hide scrollbar in Internet Explorer and Edge */
+    scrollbar-width: none;  /* Hide scrollbar in Firefox */
+  }
+
+.doctor-profile-header {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+.doctor-profile-pic {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 3px solid var(--primary-color);
+}
+
+.doctor-info {
+  text-align: left;
+  display: flex;
+  flex-direction: column;
+  gap: 0px;
+
+}
+
+.doctor-name {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: var(--text-color);
+  margin-bottom: 0;
+  margin-top: 0;
+
+}
+
+.editprofile{
+    border-radius: 15px;
+    border: #1c909a;
+    padding: 5px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);   
+}
+
+.editprofile:hover {
+    transform: translateY(-2px);
+}
+
+.doctor-specialty {
+  font-size: 1rem;
+  color: var(--primary-color);
+  margin-bottom: 0;
+
+}
+
+.doctor-rating {
+  font-size: 1rem;
+  color: var(--text-color);
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.rating-icon {
+  color: gold;
+}
+
+.review-count {
+  font-size: 0.85rem;
+  color: var(--primary-dark);
+}
+
+.doctor-profile-buttons {
+  margin-top: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.profile-button {
+  width: 100%;
+  max-width: 400px;
+  padding: 0.75rem;
+  margin: 0.5rem 0;
+  background: #40a7b0;
+  color: var(--text-color);
+  border: none;
+  border-radius: 12px;
+  font-weight: 600;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.profile-button:hover {
+  background: #1c909a;
+}
+
+.button-icon {
+  width: 18px;
+  height: 18px;
+}
+
+/* Existing styles remain the same */
+
+/* Information Section Styles */
+.doctor-profile-info {
+    margin-top: 25px;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.info-item {
+    display: flex;
+    align-items: center;
+    padding: 16px;
+    background-color: #f8f9fa;
+    border-radius: 10px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    gap: 12px;
+    transition: transform 0.2s ease;
+    text-align: left;
+    width: 70%;
+}
+
+.info-item:hover {
+    transform: translateY(-2px);
+}
+
+.info-icon {
+    width: 20px;
+    height: 20px;
+    color: var(--primary-color);
+    flex-shrink: 0;
+}
+
+.info-text {
+    font-size: 0.95rem;
+    color: #2d3436;
+    line-height: 1.4;
+    font-weight: 500;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .doctor-profile-info {
+        grid-template-columns: 1fr;
+    }
+    
+    .info-item {
+        padding: 12px;
+    }
+    
+    .info-text {
+        font-size: 0.9rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .info-item {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 8px;
+    }
+    
+    .info-icon {
+        align-self: flex-start;
+    }
+}
