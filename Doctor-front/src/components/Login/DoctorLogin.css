@@ -26,6 +26,7 @@ html, body {
   align-items: center;
   justify-content: center;
   position: relative;
+  padding: 10px;
 }
 
 .login-container {
@@ -33,10 +34,17 @@ html, body {
   max-width: 420px;
   z-index: 1;
   max-height: 100vh;
-  padding: 1rem;
   display: flex;
   justify-content: center;
   align-items: center;
+  overflow: auto;
+  scroll-behavior: smooth;
+  -ms-overflow-style: none;  /* Hide scrollbar in Internet Explorer and Edge */
+  scrollbar-width: none; 
+  height: 100%;
+  background-color: #f0fdfa00;
+  border-radius: 24px;
+
 }
 
 .login-card {
@@ -49,12 +57,10 @@ html, body {
   border: 1px solid rgba(255, 255, 255, 0.5);
   transform: translateY(0);
   transition: transform 0.3s ease, box-shadow 0.3s ease;
-  overflow-y: auto;
-  margin-left: auto;
-  margin-right: auto;
-  max-height: 80vh;
-  margin-top: 0;
-  scroll-behavior: smooth;
+
+  height: auto;
+  margin: 1rem;
+
 }
 
 .login-card:hover {
@@ -63,14 +69,11 @@ html, body {
 }
 
 /* Hide scrollbar but allow scrolling */
-.login-card::-webkit-scrollbar {
+.login-container::-webkit-scrollbar {
   display: none;
 }
 
-.login-card {
-  -ms-overflow-style: none;  /* Hide scrollbar in Internet Explorer and Edge */
-  scrollbar-width: none;  /* Hide scrollbar in Firefox */
-}
+
 
 
 .brand-logo {
@@ -116,6 +119,10 @@ html, body {
 
 .form-group {
   margin-bottom: 1.5rem;
+  
+}
+
+#exceptionel{
 }
 
 .input-wrapper {
@@ -248,6 +255,19 @@ html, body {
   border-radius: 50%;
   border-top-color: white;
   animation: spin 1s linear infinite;
+}
+
+.error-message{
+  text-align: center;
+  font-size: 13px;
+  margin-top: 5px;
+  padding-top: 0;
+  position: relative;
+  top: 0;
+}
+
+#pass{
+  margin-bottom: 0px;
 }
 
 @keyframes spin {

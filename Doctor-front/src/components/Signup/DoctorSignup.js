@@ -15,6 +15,7 @@ const DoctorSignup = () => {
     email: "",
     phone_number: "",
     password: "",
+    confirmPassword: "",
     specialty: "",
     license_number: "",
     exp_years: "",
@@ -29,11 +30,12 @@ const DoctorSignup = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [step, setStep] = useState(1);
   const [cities, setCities] = useState([]);
+  const [errorMessage, setErrorMessage] = useState("");
 
   const handleChange = (e) => {
     const { name, value } = e.target;
     
-    if (name !== "hospitals" && name !== "additionalContact" && name !== "confirmPassword") {  // Ignore hospitals
+    if (name !== "hospitals" && name !== "additionalContact") { 
         setFormData({ ...formData, [name]: value });
     }
   };
@@ -79,14 +81,23 @@ const DoctorSignup = () => {
   };
   
 
-    const handleSubmit = async (e) => {
+  const handleSubmit = async (e) => {
       e.preventDefault();
       setIsLoading(true);
+      setErrorMessage(""); 
+
+      // Check if passwords match before submitting
+      if (formData.password !== formData.confirmPassword) {
+        setErrorMessage("Passwords do not match");
+        setIsLoading(false);
+        return;
+      }
 
       const formDataToSend = new FormData();
       Object.keys(formData).forEach((key) => {
-        formDataToSend.append(key, formData[key]);
-      });
+        if (key !== "confirmPassword") {
+          formDataToSend.append(key, formData[key]);
+        }      });
       const jsonData = JSON.stringify(formData)
       console.log("Data sent: " + jsonData)
 
@@ -108,9 +119,14 @@ const DoctorSignup = () => {
           } else {
             console.log("Data: ", data);
             console.log("Response body: ", response.body);
+            if (data.message == "Doctor already exists") {
+              setErrorMessage("The Email you used already exists.");
+              return;
+            }
             
-            
-              alert(data.message || "Something went wrong");
+            // Optionally, set any other error message to be shown inline:
+            setErrorMessage(data.message || "Something went wrong");
+          
           }
       } catch (error) {
           setIsLoading(false);
@@ -449,11 +465,18 @@ const DoctorSignup = () => {
                       name="confirmPassword"
                       className="form-input"
                       placeholder="Confirm Password"
+                      value={formData.confirmPassword}
                       onChange={handleChange}
                       required
                     />
                   </div>
                 </div>
+
+                {errorMessage && (
+                  <div className="error-message" style={{ color: "red", marginBottom: "10px" }}>
+                    {errorMessage}
+                  </div>
+                )}
 
                 <div className="form-group">
                   <div className="password-requirements">
@@ -510,122 +533,4 @@ const DoctorSignup = () => {
 };
 
 export default DoctorSignup;
-
-// import React, { useState } from "react";
-// import { useNavigate } from "react-router-dom";
-// import "./DoctorSignup.css";
-// import doctorImage from "../resources/Doctors-rafiki.png";
-
-// const DoctorSignup = ({ toggle }) => {
-//   const [formData, setFormData] = useState({
-//     firstName: "",
-//     lastName: "",
-//     email: "",
-//     phone: "",
-//     password: "",
-//     confirmPassword: "",
-//     specialty: "",
-//     subspecialty: "",
-//     licenseNumber: "",
-//     experience: "",
-//     hospitals: "",
-//     bio: "",
-//     consultationFeeFirst: "",
-//     consultationFeeFollowUp: "",
-//     consultationType: [],
-//     address: "",
-//     city: "",
-//     additionalContact: "",
-//     medicalLicense: null,
-//     idPassport: null,
-//     profilePicture: null,
-//   });
-
-//   const specialties = ["Cardiology", "Dermatology", "Neurology", "Pediatrics"];
-//   const cities = ["Beirut", "Tripoli", "Sidon", "Jounieh"];
-//   const consultationTypes = ["In-person", "Telemedicine"];
-//   const navigate = useNavigate();
-
-
-//   const handleChange = (e) => {
-//     const { name, value, type, checked } = e.target;
-//     if (type === "checkbox") {
-//       setFormData((prev) => ({
-//         ...prev,
-//         consultationType: checked
-//           ? [...prev.consultationType, value]
-//           : prev.consultationType.filter((type) => type !== value),
-//       }));
-//     } else if (type === "file") {
-//       setFormData({ ...formData, [name]: e.target.files[0] });
-//     } else {
-//       setFormData({ ...formData, [name]: value });
-//     }
-//   };
-
-//   const handleSubmit = (e) => {
-//     e.preventDefault();
-//     console.log(formData);
-//   };
-
-//   return (
-//     <div className="form-container">
-//       <h2 className="form-title">Welcom to TobCare!</h2>
-//       <p className="toggle-p" onClick={() => navigate("/drlogin")}>
-//         Already have an account? <span className="toggle-link">Log in here</span>
-//       </p>
-//       <form onSubmit={handleSubmit} className="form-body">
-//       <img src={doctorImage} alt="Doctor Illustration"></img>
-//       <p className="Samira">Register now to join TobCare!</p>
-//         <div className="form-group">
-//           <input name="firstName" placeholder="First Name*" onChange={handleChange} className="input" required />
-//           <input name="lastName" placeholder="Last Name*" onChange={handleChange} className="input" required />
-//         </div>
-//         <input type="email" name="email" placeholder="Email*" onChange={handleChange} className="input" required />
-//         <input type="tel" name="phone" placeholder="Phone Number*" onChange={handleChange} className="input" required />
-//         <input type="password" name="password" placeholder="Password*" onChange={handleChange} className="input" required />
-//         <input type="password" name="confirmPassword" placeholder="Confirm Password*" onChange={handleChange} className="input" required />
-        
-//         <select name="specialty" onChange={handleChange} className="input" required>
-//           <option value="">Select Specialty*</option>
-//           {specialties.map((s) => (
-//             <option key={s} value={s}>{s}</option>
-//           ))}
-//         </select>
-//         <input name="subspecialty" placeholder="Subspecialty (Optional)" onChange={handleChange} className="input" />
-//         <input name="licenseNumber" placeholder="Medical License Number*" onChange={handleChange} className="input" required />
-//         <input type="number" name="experience" placeholder="Years of Experience*" onChange={handleChange} className="input" required />
-//         <input name="hospitals" placeholder="Affiliated Hospitals/Clinics" onChange={handleChange} className="input" />
-//         <textarea name="bio" placeholder="Professional Bio" onChange={handleChange} className="input"></textarea>
-        
-//         <input type="number" name="consultationFeeFirst" placeholder="Consultation Fee (First-time)*" onChange={handleChange} className="input" required />
-//         <input type="number" name="consultationFeeFollowUp" placeholder="Consultation Fee (Follow-up)*" onChange={handleChange} className="input" required />
-        
-//         <div className="checkbox-group">
-//           <label>Consultation Type:</label>
-//           {consultationTypes.map((type) => (
-//             <label key={type}>
-//               <input type="checkbox" name="consultationType" value={type} onChange={handleChange} /> {type}
-//             </label>
-//           ))}
-//         </div>
-        
-//         <input name="address" placeholder="Clinic/Hospital Address*" onChange={handleChange} className="input" required />
-//         <select name="city*" onChange={handleChange} className="input" required>
-//           <option value="">Select City*</option>
-//           {cities.map((city) => (
-//             <option key={city} value={city}>{city}</option>
-//           ))}
-//         </select>
-//         <input name="additionalContact" placeholder="Additional Contact Info (Optional)" onChange={handleChange} className="input" />
-        
-//         <label className="file-upload">Medical License Copy: <input type="file" name="medicalLicense" onChange={handleChange} className="input" required /></label>
-//         <label className="file-upload">ID/Passport: <input type="file" name="idPassport" onChange={handleChange} className="input" required /></label>
-//         <label className="file-upload">Profile Picture: <input type="file" name="profilePicture" onChange={handleChange} className="input" required /></label>
-        
-//         <button type="submit" className="submit-button">Sign Up</button>
-//       </form>
-//     </div>
-//   );
-// };
 

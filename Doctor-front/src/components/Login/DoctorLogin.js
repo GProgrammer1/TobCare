@@ -13,43 +13,55 @@ const DoctorLogin = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [isValid, setIsValid] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
 
   const handleEmailChange = (e) => {
     setEmail(e.target.value);
     setIsValid(e.target.value.includes("@") && e.target.value.includes("."));
   };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    setIsLoading(true);
-
-    try {
+    const handleSubmit = async (e) => {
+      e.preventDefault();
+      setErrorMessage(""); // clear any previous errors
+      setIsLoading(true);
+    
+      try {
         const response = await fetch("https://ednisgva11.execute-api.us-east-1.amazonaws.com/dev/login_doctor", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify({
-                email: email,
-                password: password
-            })
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({
+            email: email,
+            password: password
+          })
         });
-
+    
         const data = await response.json();
+        console.log("DatA: ", data);
+        
         setIsLoading(false);
-
+    
         if (response.ok) {
-            console.log("Login successful");
-            localStorage.setItem("doctorToken", data.token); // Store token for authentication
-            navigate("/drprofile"); // Redirect after successful login
+          console.log("Login successful");
+          localStorage.setItem("doctorToken", JSON.parse(data).email);
+          localStorage.setItem("doctorEmail", JSON.parse(data).email);
+          console.log("email: ");
+          
+          navigate("/drprofile");
         } else {
-            alert(data.message || "Invalid email or password");
+          console.log("Data msg :", data.message);
+          
+          setErrorMessage(data.message || "Invalid email or password");
         }
       } catch (error) {
-            setIsLoading(false);
-            alert("Error: " + error.message);
+        console.log("Error: ", error.message);
+        
+        setIsLoading(false);
+        setErrorMessage("Error: " + error.message);
       }
-  };
+    };
+    
 
   return (
     <div className="login-page">
@@ -79,7 +91,7 @@ const DoctorLogin = () => {
               </div>
             </div>
 
-            <div className="form-group">
+            <div className="form-group" id="exceptionel">
               <div className="input-wrapper">
                 <div className="lock-icon"></div>
                 <input
@@ -88,6 +100,7 @@ const DoctorLogin = () => {
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   placeholder="Enter your password"
+                  id="pass"
                 />
                 <span
                   className="toggle-password"
@@ -98,14 +111,12 @@ const DoctorLogin = () => {
               </div>
             </div>
 
-            <div className="remember-forgot">
-              <label className="remember-me">
-                <input type="checkbox" />
-                <span className="checkmark"></span>
-                Remember me
-              </label>
-              <a href="#" className="forgot-link">Forgot password?</a>
-            </div>
+            {errorMessage && (
+              <div className="error-message" style={{ color: "red", marginBottom: "10px" }}>
+                {errorMessage}
+              </div>
+            )}
+
 
             <button type="submit" className={`login-button ${isLoading ? 'loading' : ''}`}>
               {isLoading ? (
@@ -120,15 +131,15 @@ const DoctorLogin = () => {
             <p className="register-text">
               Don't have an account?{" "}
               <span
-  className="register-link"
-  onClick={() => navigate("/drsignup")}
-  style={{ 
-    cursor: "pointer", 
-   
-  }}
->
-Sign Up as a Medical Professional
-</span>
+                className="register-link"
+                onClick={() => navigate("/drsignup")}
+                style={{ 
+                  cursor: "pointer", 
+                
+                }}
+              >
+              Sign Up as a Medical Professional
+              </span>
             </p>
           </div>
 
@@ -139,52 +150,3 @@ Sign Up as a Medical Professional
 };
 
 export default DoctorLogin;
-
-// const DoctorLogin = ({ toggle }) => {
-//   const [formData, setFormData] = useState({
-//     email: "",
-//     password: "",
-//   });
-
-//   const handleChange = (e) => {
-//     const { name, value } = e.target;
-//     setFormData({ ...formData, [name]: value });
-//   };
-
-//   const handleSubmit = (e) => {
-//     e.preventDefault();
-//     console.log("Doctor Login Data:", formData);
-//   };
-
-//   return (
-//     <div className="login-container">
-//       <h2 className="login-title">Doctor Login</h2>
-//       <form onSubmit={handleSubmit} className="login-form">
-//       <p className="toggle-p" onClick={toggle}>
-//         Don't have an account yet? <span className="toggle-link">Sign up here</span>
-//       </p>
-//         <input
-//           type="email"
-//           name="email"
-//           placeholder="Email"
-//           onChange={handleChange}
-//           className="input"
-//           required
-//         />
-//         <input
-//           type="password"
-//           name="password"
-//           placeholder="Password"
-//           onChange={handleChange}
-//           className="input"
-//           required
-//         />
-//         <button type="submit" className="login-button">Login</button>
-//       </form>
-//       <p className="forgot-password">Forgot password?</p>
-//     </div>
-//   );
-// };
-
-// export default DoctorLogin;
-

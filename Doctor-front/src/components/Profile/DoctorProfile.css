@@ -52,12 +52,19 @@
   border: 3px solid var(--primary-color);
 }
 
+.drvision{
+  display: flex;
+  overflow-x: hidden; 
+  gap: 15px;
+
+}
+
+
 .doctor-info {
   text-align: left;
   display: flex;
   flex-direction: column;
   gap: 0px;
-
 }
 
 .doctor-name {
@@ -104,6 +111,25 @@
   color: var(--primary-dark);
 }
 
+.dr-media{
+  width: auto;
+  padding: 0;
+  margin-left: 0;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: baseline;
+  align-items: center;
+}
+
+.dr-media img{
+    width: 70%;
+    height: auto;
+    object-fit: contain;
+    border-radius: 24px;
+    box-shadow: 0 3px 5px rgba(0, 0, 0, 0.05);
+}
+
 .doctor-profile-buttons {
   margin-top: 1.5rem;
   display: flex;
@@ -147,6 +173,8 @@
     display: flex;
     flex-direction: column;
     gap: 15px;
+    width: 60%;
+    margin-right: 0;
 }
 
 .info-item {
@@ -159,7 +187,7 @@
     gap: 12px;
     transition: transform 0.2s ease;
     text-align: left;
-    width: 70%;
+    width: 90%;
 }
 
 .info-item:hover {
@@ -206,3 +234,4 @@
         align-self: flex-start;
     }
 }
+
