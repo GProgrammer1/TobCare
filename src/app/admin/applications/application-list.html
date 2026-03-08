@@ -1,0 +1,121 @@
+<div class="app-list" *transloco="let t">
+    <!-- Header -->
+    <div class="app-list__header">
+        <div class="app-list__title-row">
+            <h1 class="app-list__title">{{ t('admin.applications.title') }}</h1>
+            <p class="app-list__subtitle">{{ t('admin.applications.subtitle') }}</p>
+        </div>
+    </div>
+
+    <!-- Status Cards -->
+    <div class="app-list__stats">
+        <div class="app-list__stat-card app-list__stat-card--total">
+            <span class="app-list__stat-value">{{ counts().total }}</span>
+            <span class="app-list__stat-label">{{ t('admin.applications.stats.total') }}</span>
+        </div>
+        <div class="app-list__stat-card app-list__stat-card--pending">
+            <span class="app-list__stat-value">{{ counts().pending }}</span>
+            <span class="app-list__stat-label">{{ t('admin.applications.stats.pending') }}</span>
+        </div>
+        <div class="app-list__stat-card app-list__stat-card--verified">
+            <span class="app-list__stat-value">{{ counts().verified }}</span>
+            <span class="app-list__stat-label">{{ t('admin.applications.stats.verified') }}</span>
+        </div>
+        <div class="app-list__stat-card app-list__stat-card--rejected">
+            <span class="app-list__stat-value">{{ counts().rejected }}</span>
+            <span class="app-list__stat-label">{{ t('admin.applications.stats.rejected') }}</span>
+        </div>
+    </div>
+
+    <!-- Filters -->
+    <div class="app-list__filters">
+        <div class="app-list__search">
+            <input
+                type="text"
+                pInputText
+                [(ngModel)]="searchQuery"
+                (keyup.enter)="onSearch()"
+                [placeholder]="t('admin.applications.searchPlaceholder')"
+                class="app-list__search-input"
+            />
+            <button pButton class="app-list__search-btn" (click)="onSearch()">
+                {{ t('admin.applications.search') }}
+            </button>
+        </div>
+        <p-select
+            [options]="statusOptions"
+            [(ngModel)]="selectedStatus"
+            (onChange)="onStatusFilter()"
+            optionLabel="label"
+            optionValue="value"
+            [placeholder]="t('admin.applications.filterStatus')"
+            class="app-list__status-filter"
+        />
+    </div>
+
+    <!-- Table -->
+    <div class="app-list__table-wrap">
+        <table class="app-list__table" *ngIf="!loading(); else loadingSkeleton">
+            <thead>
+                <tr>
+                    <th>{{ t('admin.applications.table.name') }}</th>
+                    <th>{{ t('admin.applications.table.email') }}</th>
+                    <th>{{ t('admin.applications.table.specialties') }}</th>
+                    <th>{{ t('admin.applications.table.status') }}</th>
+                    <th>{{ t('admin.applications.table.date') }}</th>
+                    <th>{{ t('admin.applications.table.actions') }}</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let app of applications()" class="app-list__row" (click)="viewApplication(app)">
+                    <td>
+                        <span class="app-list__doctor-name">{{ getFullName(app) }}</span>
+                    </td>
+                    <td>{{ app.email }}</td>
+                    <td>
+                        <div class="app-list__specialties">
+                            <p-tag *ngFor="let s of app.specialties.slice(0, 2)" [value]="s" severity="info" />
+                            <span *ngIf="app.specialties.length > 2" class="app-list__more">+{{ app.specialties.length - 2 }}</span>
+                        </div>
+                    </td>
+                    <td>
+                        <p-tag [value]="app.status" [severity]="getStatusSeverity(app.status)" />
+                    </td>
+                    <td>{{ app.createdAt | date:'mediumDate' }}</td>
+                    <td>
+                        <button
+                            pButton
+                            class="app-list__view-btn"
+                            (click)="viewApplication(app); $event.stopPropagation()"
+                        >
+                            {{ t('admin.applications.table.view') }}
+                        </button>
+                    </td>
+                </tr>
+                <tr *ngIf="applications().length === 0">
+                    <td colspan="6" class="app-list__empty">
+                        {{ t('admin.applications.noResults') }}
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
+        <!-- Load More -->
+        <div class="app-list__load-more" *ngIf="meta().hasMore && !loading()">
+            <button
+                pButton
+                class="app-list__load-more-btn"
+                [loading]="loadingMore()"
+                (click)="loadMore()"
+            >
+                {{ t('admin.applications.loadMore') }}
+            </button>
+        </div>
+    </div>
+
+    <ng-template #loadingSkeleton>
+        <div class="app-list__loading">
+            <p>{{ t('admin.detail.loading') }}</p>
+        </div>
+    </ng-template>
+</div>

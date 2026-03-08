@@ -1,0 +1,689 @@
+<div class="apply" *transloco="let t">
+
+    <!-- LEFT: Form side -->
+    <main id="main-content" class="apply__form-side">
+        <div class="apply__form-wrapper">
+
+            <!-- Logo -->
+            <a routerLink="/" class="apply__logo">
+                <img src="logo.png" alt="TobCare" width="32" height="32">
+                <span class="logo-tob">Tob</span><span class="logo-care">Care</span>
+            </a>
+
+            @if (!submitSuccess()) {
+
+            <!-- Step indicator -->
+            <div class="apply__steps">
+                <div class="apply__step-bar" role="progressbar"
+                    [attr.aria-label]="'Progress: step ' + currentStep() + ' of ' + totalSteps"
+                    [attr.aria-valuenow]="currentStep()" aria-valuemin="1" [attr.aria-valuemax]="totalSteps">
+                    @for (s of [1, 2, 3, 4, 5]; track s) {
+                    <div class="apply__step-segment" [class.active]="s <= currentStep()"
+                        [class.current]="s === currentStep()"></div>
+                    }
+                </div>
+                <span class="apply__step-label">{{ t('doctorApply.stepOf', { current: currentStep(), total: totalSteps
+                    }) }}</span>
+            </div>
+
+            <!-- Heading -->
+            <div class="apply__heading">
+                <h1>
+                    <span class="weight-light">{{ t('doctorApply.heading1') }}</span> <em class="weight-bold">{{
+                        t('doctorApply.heading2') }}</em>
+                </h1>
+                <p class="apply__subtitle">
+                    @switch (currentStep()) {
+                    @case (1) { {{ t('doctorApply.subtitleStep1') }} }
+                    @case (2) { {{ t('doctorApply.subtitleStep2') }} }
+                    @case (3) { {{ t('doctorApply.subtitleStep3') }} }
+                    @case (4) { {{ t('doctorApply.subtitleStep4') }} }
+                    @case (5) { {{ t('doctorApply.subtitleStep5') }} }
+                    }
+                </p>
+            </div>
+
+            <!-- Form -->
+            <form [formGroup]="applyForm" (ngSubmit)="onContinue()" class="apply__form" autocomplete="off">
+
+                <!-- ═══════════════════════════════ STEP 1 — Personal Info ═══════════════════════════════ -->
+                @if (currentStep() === 1) {
+
+                <div class="apply__row">
+                    <!-- First Name -->
+                    <div class="apply__field">
+                        <label for="firstName" class="apply__label">{{ t('doctorApply.firstName') }}</label>
+                        <input pInputText id="firstName" formControlName="firstName"
+                            [placeholder]="t('doctorApply.firstNamePlaceholder')" class="apply__input"
+                            [attr.aria-invalid]="f['firstName'].invalid && f['firstName'].touched"
+                            [class.ng-invalid-shown]="f['firstName'].invalid && f['firstName'].touched" />
+                        @if (f['firstName'].invalid && f['firstName'].touched) {
+                        <small class="apply__error" role="alert">{{ t('doctorApply.firstNameRequired') }}</small>
+                        }
+                    </div>
+
+                    <!-- Last Name -->
+                    <div class="apply__field">
+                        <label for="lastName" class="apply__label">{{ t('doctorApply.lastName') }}</label>
+                        <input pInputText id="lastName" formControlName="lastName"
+                            [placeholder]="t('doctorApply.lastNamePlaceholder')" class="apply__input"
+                            [attr.aria-invalid]="f['lastName'].invalid && f['lastName'].touched"
+                            [class.ng-invalid-shown]="f['lastName'].invalid && f['lastName'].touched" />
+                        @if (f['lastName'].invalid && f['lastName'].touched) {
+                        <small class="apply__error" role="alert">{{ t('doctorApply.lastNameRequired') }}</small>
+                        }
+                    </div>
+                </div>
+
+                <!-- Email -->
+                <div class="apply__field">
+                    <label for="email" class="apply__label">{{ t('doctorApply.email') }}</label>
+                    <input pInputText id="email" formControlName="email" type="email"
+                        [placeholder]="t('doctorApply.emailPlaceholder')" class="apply__input"
+                        [attr.aria-invalid]="f['email'].invalid && f['email'].touched"
+                        [class.ng-invalid-shown]="f['email'].invalid && f['email'].touched" />
+                    @if (f['email'].invalid && f['email'].touched) {
+                    <small class="apply__error" role="alert">
+                        @if (f['email'].errors?.['required']) {
+                        {{ t('doctorApply.emailRequired') }}
+                        } @else {
+                        {{ t('doctorApply.emailInvalid') }}
+                        }
+                    </small>
+                    }
+                </div>
+
+                <!-- Phone -->
+                <div class="apply__field">
+                    <label for="phone" class="apply__label">{{ t('doctorApply.phone') }}</label>
+                    <input pInputText id="phone" formControlName="phone" type="tel"
+                        [placeholder]="t('doctorApply.phonePlaceholder')" class="apply__input"
+                        [attr.aria-invalid]="f['phone'].invalid && f['phone'].touched"
+                        [class.ng-invalid-shown]="f['phone'].invalid && f['phone'].touched" />
+                    @if (f['phone'].invalid && f['phone'].touched) {
+                    <small class="apply__error" role="alert">
+                        @if (f['phone'].errors?.['required']) {
+                        {{ t('doctorApply.phoneRequired') }}
+                        } @else {
+                        {{ t('doctorApply.phoneInvalid') }}
+                        }
+                    </small>
+                    }
+                </div>
+
+                <!-- Date of Birth -->
+                <div class="apply__field">
+                    <label for="dateOfBirth" class="apply__label">{{ t('doctorApply.dateOfBirth') }}</label>
+                    <p-datepicker id="dateOfBirth" formControlName="dateOfBirth"
+                        [placeholder]="t('doctorApply.dateOfBirthPlaceholder')" dateFormat="yy-mm-dd" [showIcon]="true"
+                        [maxDate]="today" appendTo="body" styleClass="apply__input-full"
+                        panelStyleClass="apply-datepicker-panel" [baseZIndex]="11000" [autoZIndex]="true"
+                        [attr.aria-invalid]="f['dateOfBirth'].invalid && f['dateOfBirth'].touched" />
+                    @if (f['dateOfBirth'].invalid && f['dateOfBirth'].touched) {
+                    <small class="apply__error" role="alert">{{ t('doctorApply.dateOfBirthRequired') }}</small>
+                    }
+                </div>
+
+                }
+
+                <!-- ═══════════════════════════════ STEP 2 — Professional Info ═══════════════════════════════ -->
+                @if (currentStep() === 2) {
+
+                <!-- National ID Number -->
+                <div class="apply__field">
+                    <label for="nationalIdNumber" class="apply__label">{{ t('doctorApply.nationalIdNumber') }}</label>
+                    <input pInputText id="nationalIdNumber" formControlName="nationalIdNumber"
+                        [placeholder]="t('doctorApply.nationalIdNumberPlaceholder')" class="apply__input"
+                        [class.ng-invalid-shown]="f['nationalIdNumber'].invalid && f['nationalIdNumber'].touched" />
+                    @if (f['nationalIdNumber'].invalid && f['nationalIdNumber'].touched) {
+                    <small class="apply__error" role="alert">{{ t('doctorApply.nationalIdNumberRequired') }}</small>
+                    }
+                </div>
+
+                <div class="apply__row">
+                    <!-- LOP Number -->
+                    <div class="apply__field">
+                        <label for="lopNumber" class="apply__label">{{ t('doctorApply.lopNumber') }}</label>
+                        <input pInputText id="lopNumber" formControlName="lopNumber"
+                            [placeholder]="t('doctorApply.lopNumberPlaceholder')" class="apply__input"
+                            [class.ng-invalid-shown]="f['lopNumber'].invalid && f['lopNumber'].touched" />
+                        @if (f['lopNumber'].invalid && f['lopNumber'].touched) {
+                        <small class="apply__error" role="alert">{{ t('doctorApply.lopNumberRequired') }}</small>
+                        }
+                    </div>
+
+                    <!-- MOPH License Number -->
+                    <div class="apply__field">
+                        <label for="mophLicenseNumber" class="apply__label">{{ t('doctorApply.mophLicenseNumber')
+                            }}</label>
+                        <input pInputText id="mophLicenseNumber" formControlName="mophLicenseNumber"
+                            [placeholder]="t('doctorApply.mophLicenseNumberPlaceholder')" class="apply__input"
+                            [class.ng-invalid-shown]="f['mophLicenseNumber'].invalid && f['mophLicenseNumber'].touched" />
+                        @if (f['mophLicenseNumber'].invalid && f['mophLicenseNumber'].touched) {
+                        <small class="apply__error" role="alert">{{ t('doctorApply.mophLicenseNumberRequired') }}</small>
+                        }
+                    </div>
+                </div>
+
+                <!-- Is Specialist -->
+                <div class="apply__field apply__field--inline">
+                    <p-checkbox formControlName="isSpecialist" [binary]="true" inputId="isSpecialist" />
+                    <label for="isSpecialist" class="apply__label apply__label--checkbox">{{
+                        t('doctorApply.isSpecialist') }}</label>
+                </div>
+
+                <!-- Specialties -->
+                <div class="apply__field">
+                    <label class="apply__label">{{ t('doctorApply.specialties') }}</label>
+                    <div class="apply__chips-input">
+                        <div class="apply__chips-list">
+                            @for (spec of specialtiesList; track $index) {
+                            <p-chip [label]="spec" [removable]="true" (onRemove)="removeSpecialty($index)" />
+                            }
+                        </div>
+                        <input pInputText [(ngModel)]="specialtyInput" [ngModelOptions]="{standalone: true}"
+                            [placeholder]="t('doctorApply.specialtiesPlaceholder')" class="apply__input"
+                            (keydown)="onSpecialtyKeydown($event)" />
+                    </div>
+                    @if (f['specialties'].invalid && f['specialties'].touched) {
+                    <small class="apply__error" role="alert">{{ t('doctorApply.specialtiesRequired') }}</small>
+                    }
+                </div>
+
+                <div class="apply__row">
+                    <!-- Graduation Country -->
+                    <div class="apply__field">
+                        <label for="graduationCountry" class="apply__label">{{ t('doctorApply.graduationCountry')
+                            }}</label>
+                        <input pInputText id="graduationCountry" formControlName="graduationCountry"
+                            [placeholder]="t('doctorApply.graduationCountryPlaceholder')" class="apply__input"
+                            [class.ng-invalid-shown]="f['graduationCountry'].invalid && f['graduationCountry'].touched" />
+                        @if (f['graduationCountry'].invalid && f['graduationCountry'].touched) {
+                        <small class="apply__error" role="alert">{{ t('doctorApply.graduationCountryRequired') }}</small>
+                        }
+                    </div>
+
+                    <!-- Graduation Year -->
+                    <div class="apply__field">
+                        <label for="graduationYear" class="apply__label">{{ t('doctorApply.graduationYear') }}</label>
+                        <p-inputnumber id="graduationYear" formControlName="graduationYear"
+                            [placeholder]="t('doctorApply.graduationYearPlaceholder')" [min]="1950"
+                            [max]="currentYear()" [useGrouping]="false" styleClass="apply__input-full" />
+                        @if (f['graduationYear'].invalid && f['graduationYear'].touched) {
+                        <small class="apply__error" role="alert">{{ t('doctorApply.graduationYearRequired') }}</small>
+                        }
+                    </div>
+                </div>
+
+                <!-- Medical School -->
+                <div class="apply__field">
+                    <label for="medicalSchool" class="apply__label">{{ t('doctorApply.medicalSchool') }}</label>
+                    <input pInputText id="medicalSchool" formControlName="medicalSchool"
+                        [placeholder]="t('doctorApply.medicalSchoolPlaceholder')" class="apply__input"
+                        [class.ng-invalid-shown]="f['medicalSchool'].invalid && f['medicalSchool'].touched" />
+                    @if (f['medicalSchool'].invalid && f['medicalSchool'].touched) {
+                    <small class="apply__error" role="alert">{{ t('doctorApply.medicalSchoolRequired') }}</small>
+                    }
+                </div>
+
+                }
+
+                <!-- ═══════════════════════════════ STEP 3 — Practice Locations ═══════════════════════════════ -->
+                @if (currentStep() === 3) {
+
+                <!-- Clinics -->
+                <fieldset class="apply__fieldset" formArrayName="clinics">
+                    <legend class="apply__fieldset-legend">
+                        <i class="pi pi-building"></i>
+                        {{ t('doctorApply.clinics') }}
+                    </legend>
+
+                    @for (clinic of clinics.controls; track $index; let i = $index) {
+                    <div class="apply__array-card" [formGroupName]="i">
+                        <div class="apply__array-card-header">
+                            <span class="apply__array-card-number">{{ i + 1 }}</span>
+                            <button type="button" class="apply__remove-btn" (click)="removeClinic(i)"
+                                [attr.aria-label]="t('doctorApply.removeClinic')">
+                                <i class="pi pi-times" aria-hidden="true"></i>
+                            </button>
+                        </div>
+                        <div class="apply__field">
+                            <label [for]="'clinic-name-' + i" class="apply__label">{{ t('doctorApply.clinicName')
+                                }}</label>
+                            <input pInputText [id]="'clinic-name-' + i" formControlName="name"
+                                [placeholder]="t('doctorApply.clinicNamePlaceholder')" class="apply__input"
+                                [class.ng-invalid-shown]="clinic.get('name')?.invalid && clinic.get('name')?.touched" />
+                            @if (clinic.get('name')?.invalid && clinic.get('name')?.touched) {
+                            <small class="apply__error" role="alert">{{ t('doctorApply.clinicNameRequired') }}</small>
+                            }
+                        </div>
+                        <div class="apply__row">
+                            <div class="apply__field">
+                                <label [for]="'clinic-gov-' + i" class="apply__label">{{ t('doctorApply.governorate')
+                                    }}</label>
+                                <p-select [id]="'clinic-gov-' + i" formControlName="governorate"
+                                    [options]="governorateOptions" optionLabel="label" optionValue="value"
+                                    [placeholder]="t('doctorApply.governoratePlaceholder')" appendTo="body"
+                                    styleClass="apply__input-full" panelStyleClass="apply-select-panel" />
+                                @if (clinic.get('governorate')?.invalid && clinic.get('governorate')?.touched) {
+                                <small class="apply__error" role="alert">{{ t('doctorApply.governorateRequired')
+                                    }}</small>
+                                }
+                            </div>
+                            <div class="apply__field">
+                                <label [for]="'clinic-fee-' + i" class="apply__label">{{
+                                    t('doctorApply.consultationFee') }}</label>
+                                <p-inputnumber [id]="'clinic-fee-' + i" formControlName="consultationFee"
+                                    [placeholder]="t('doctorApply.consultationFeePlaceholder')" [min]="0" mode="decimal"
+                                    [useGrouping]="false" styleClass="apply__input-full" />
+                            </div>
+                        </div>
+                        <div class="apply__field">
+                            <label [for]="'clinic-address-' + i" class="apply__label">{{ t('doctorApply.address')
+                                }}</label>
+                            <input pInputText [id]="'clinic-address-' + i" formControlName="address"
+                                [placeholder]="t('doctorApply.addressPlaceholder')" class="apply__input" />
+                        </div>
+                    </div>
+                    }
+
+                    <button type="button" class="apply__add-btn" (click)="addClinic()">
+                        <i class="pi pi-plus-circle"></i>
+                        {{ t('doctorApply.addClinic') }}
+                    </button>
+                </fieldset>
+
+                <!-- Hospitals -->
+                <fieldset class="apply__fieldset" formArrayName="hospitals">
+                    <legend class="apply__fieldset-legend">
+                        <i class="pi pi-home"></i>
+                        {{ t('doctorApply.hospitals') }}
+                    </legend>
+
+                    @for (hospital of hospitals.controls; track $index; let i = $index) {
+                    <div class="apply__array-card" [formGroupName]="i">
+                        <div class="apply__array-card-header">
+                            <span class="apply__array-card-number">{{ i + 1 }}</span>
+                            <button type="button" class="apply__remove-btn" (click)="removeHospital(i)"
+                                [attr.aria-label]="t('doctorApply.removeHospital')">
+                                <i class="pi pi-times" aria-hidden="true"></i>
+                            </button>
+                        </div>
+                        <div class="apply__field">
+                            <label [for]="'hospital-name-' + i" class="apply__label">{{ t('doctorApply.hospitalName')
+                                }}</label>
+                            <input pInputText [id]="'hospital-name-' + i" formControlName="name"
+                                [placeholder]="t('doctorApply.hospitalNamePlaceholder')" class="apply__input"
+                                [class.ng-invalid-shown]="hospital.get('name')?.invalid && hospital.get('name')?.touched" />
+                            @if (hospital.get('name')?.invalid && hospital.get('name')?.touched) {
+                            <small class="apply__error" role="alert">{{ t('doctorApply.hospitalNameRequired') }}</small>
+                            }
+                        </div>
+                        <div class="apply__row">
+                            <div class="apply__field">
+                                <label [for]="'hospital-gov-' + i" class="apply__label">{{
+                                    t('doctorApply.governorate') }}</label>
+                                <p-select [id]="'hospital-gov-' + i" formControlName="governorate"
+                                    [options]="governorateOptions" optionLabel="label" optionValue="value"
+                                    [placeholder]="t('doctorApply.governoratePlaceholder')" appendTo="body"
+                                    styleClass="apply__input-full" panelStyleClass="apply-select-panel" />
+                                @if (hospital.get('governorate')?.invalid && hospital.get('governorate')?.touched) {
+                                <small class="apply__error" role="alert">{{ t('doctorApply.governorateRequired')
+                                    }}</small>
+                                }
+                            </div>
+                            <div class="apply__field">
+                                <label [for]="'hospital-address-' + i" class="apply__label">{{
+                                    t('doctorApply.address') }}</label>
+                                <input pInputText [id]="'hospital-address-' + i" formControlName="address"
+                                    [placeholder]="t('doctorApply.addressPlaceholder')" class="apply__input"
+                                    [class.ng-invalid-shown]="hospital.get('address')?.invalid && hospital.get('address')?.touched" />
+                                @if (hospital.get('address')?.invalid && hospital.get('address')?.touched) {
+                                <small class="apply__error" role="alert">{{ t('doctorApply.addressRequired') }}</small>
+                                }
+                            </div>
+                        </div>
+                    </div>
+                    }
+
+                    <button type="button" class="apply__add-btn" (click)="addHospital()">
+                        <i class="pi pi-plus-circle"></i>
+                        {{ t('doctorApply.addHospital') }}
+                    </button>
+                </fieldset>
+
+                @if (hasLocationError()) {
+                <div class="apply__step-hint apply__step-hint--warn">
+                    <i class="pi pi-exclamation-triangle"></i>
+                    <span>{{ t('doctorApply.locationRequired') }}</span>
+                </div>
+                }
+
+                <!-- Accepted Insurances -->
+                <div class="apply__field">
+                    <label class="apply__label">{{ t('doctorApply.acceptedInsurances') }}</label>
+                    <div class="apply__chips-input">
+                        <div class="apply__chips-list">
+                            @for (ins of insurancesList; track $index) {
+                            <p-chip [label]="ins" [removable]="true" (onRemove)="removeInsurance($index)" />
+                            }
+                        </div>
+                        <input pInputText [(ngModel)]="insuranceInput" [ngModelOptions]="{standalone: true}"
+                            [placeholder]="t('doctorApply.insurancePlaceholder')" class="apply__input"
+                            (keydown)="onInsuranceKeydown($event)" />
+                    </div>
+                </div>
+
+                }
+
+                <!-- ═══════════════════════════════ STEP 4 — Document Uploads ═══════════════════════════════ -->
+                @if (currentStep() === 4) {
+
+                <div class="apply__uploads-grid">
+
+                    <!-- National ID -->
+                    <div class="apply__upload-zone" (drop)="onFileDrop('nationalIdDoc', $event)"
+                        (dragover)="onDragOver($event)"
+                        [class.apply__upload-zone--filled]="getFileName('nationalIdDoc')"
+                        [class.apply__upload-zone--error]="fileErrors['nationalIdDoc']">
+                        <i class="pi pi-id-card apply__upload-icon"></i>
+                        <span class="apply__upload-label">{{ t('doctorApply.nationalIdDoc') }}</span>
+                        @if (getFileName('nationalIdDoc')) {
+                        <span class="apply__upload-file">{{ getFileName('nationalIdDoc') }}</span>
+                        <button type="button" class="apply__upload-remove" (click)="removeFile('nationalIdDoc')">✕</button>
+                        } @else {
+                        <span class="apply__upload-hint">{{ t('doctorApply.uploadHint') }}</span>
+                        <input type="file" class="apply__upload-input" (change)="onFileSelected('nationalIdDoc', $event)"
+                            accept=".pdf,.jpg,.jpeg,.png" />
+                        }
+                        @if (fileErrors['nationalIdDoc']) {
+                        <small class="apply__error" role="alert">{{ t('doctorApply.docRequired') }}</small>
+                        }
+                    </div>
+
+                    <!-- LOP Certificate -->
+                    <div class="apply__upload-zone" (drop)="onFileDrop('lopCertificateDoc', $event)"
+                        (dragover)="onDragOver($event)"
+                        [class.apply__upload-zone--filled]="getFileName('lopCertificateDoc')"
+                        [class.apply__upload-zone--error]="fileErrors['lopCertificateDoc']">
+                        <i class="pi pi-verified apply__upload-icon"></i>
+                        <span class="apply__upload-label">{{ t('doctorApply.lopCertificateDoc') }}</span>
+                        @if (getFileName('lopCertificateDoc')) {
+                        <span class="apply__upload-file">{{ getFileName('lopCertificateDoc') }}</span>
+                        <button type="button" class="apply__upload-remove" (click)="removeFile('lopCertificateDoc')">✕</button>
+                        } @else {
+                        <span class="apply__upload-hint">{{ t('doctorApply.uploadHint') }}</span>
+                        <input type="file" class="apply__upload-input"
+                            (change)="onFileSelected('lopCertificateDoc', $event)" accept=".pdf,.jpg,.jpeg,.png" />
+                        }
+                        @if (fileErrors['lopCertificateDoc']) {
+                        <small class="apply__error" role="alert">{{ t('doctorApply.docRequired') }}</small>
+                        }
+                    </div>
+
+                    <!-- Medical Degree -->
+                    <div class="apply__upload-zone" (drop)="onFileDrop('medicalDegreeDoc', $event)"
+                        (dragover)="onDragOver($event)"
+                        [class.apply__upload-zone--filled]="getFileName('medicalDegreeDoc')"
+                        [class.apply__upload-zone--error]="fileErrors['medicalDegreeDoc']">
+                        <i class="pi pi-graduation-cap apply__upload-icon"></i>
+                        <span class="apply__upload-label">{{ t('doctorApply.medicalDegreeDoc') }}</span>
+                        @if (getFileName('medicalDegreeDoc')) {
+                        <span class="apply__upload-file">{{ getFileName('medicalDegreeDoc') }}</span>
+                        <button type="button" class="apply__upload-remove" (click)="removeFile('medicalDegreeDoc')">✕</button>
+                        } @else {
+                        <span class="apply__upload-hint">{{ t('doctorApply.uploadHint') }}</span>
+                        <input type="file" class="apply__upload-input"
+                            (change)="onFileSelected('medicalDegreeDoc', $event)" accept=".pdf,.jpg,.jpeg,.png" />
+                        }
+                        @if (fileErrors['medicalDegreeDoc']) {
+                        <small class="apply__error" role="alert">{{ t('doctorApply.docRequired') }}</small>
+                        }
+                    </div>
+
+                    <!-- MOPH License -->
+                    <div class="apply__upload-zone" (drop)="onFileDrop('mophLicenseDoc', $event)"
+                        (dragover)="onDragOver($event)"
+                        [class.apply__upload-zone--filled]="getFileName('mophLicenseDoc')"
+                        [class.apply__upload-zone--error]="fileErrors['mophLicenseDoc']">
+                        <i class="pi pi-file apply__upload-icon"></i>
+                        <span class="apply__upload-label">{{ t('doctorApply.mophLicenseDoc') }}</span>
+                        @if (getFileName('mophLicenseDoc')) {
+                        <span class="apply__upload-file">{{ getFileName('mophLicenseDoc') }}</span>
+                        <button type="button" class="apply__upload-remove" (click)="removeFile('mophLicenseDoc')">✕</button>
+                        } @else {
+                        <span class="apply__upload-hint">{{ t('doctorApply.uploadHint') }}</span>
+                        <input type="file" class="apply__upload-input"
+                            (change)="onFileSelected('mophLicenseDoc', $event)" accept=".pdf,.jpg,.jpeg,.png" />
+                        }
+                    </div>
+
+                    <!-- Colloquium -->
+                    <div class="apply__upload-zone" (drop)="onFileDrop('colloquiumDoc', $event)"
+                        (dragover)="onDragOver($event)"
+                        [class.apply__upload-zone--filled]="getFileName('colloquiumDoc')"
+                        [class.apply__upload-zone--error]="fileErrors['colloquiumDoc']">
+                        <i class="pi pi-book apply__upload-icon"></i>
+                        <span class="apply__upload-label">{{ t('doctorApply.colloquiumDoc') }}</span>
+                        @if (getFileName('colloquiumDoc')) {
+                        <span class="apply__upload-file">{{ getFileName('colloquiumDoc') }}</span>
+                        <button type="button" class="apply__upload-remove" (click)="removeFile('colloquiumDoc')">✕</button>
+                        } @else {
+                        <span class="apply__upload-hint">{{ t('doctorApply.uploadHint') }}</span>
+                        <input type="file" class="apply__upload-input"
+                            (change)="onFileSelected('colloquiumDoc', $event)" accept=".pdf,.jpg,.jpeg,.png" />
+                        }
+                    </div>
+
+                    <!-- Criminal Record -->
+                    <div class="apply__upload-zone" (drop)="onFileDrop('criminalRecordDoc', $event)"
+                        (dragover)="onDragOver($event)"
+                        [class.apply__upload-zone--filled]="getFileName('criminalRecordDoc')"
+                        [class.apply__upload-zone--error]="fileErrors['criminalRecordDoc']">
+                        <i class="pi pi-shield apply__upload-icon"></i>
+                        <span class="apply__upload-label">{{ t('doctorApply.criminalRecordDoc') }}</span>
+                        @if (getFileName('criminalRecordDoc')) {
+                        <span class="apply__upload-file">{{ getFileName('criminalRecordDoc') }}</span>
+                        <button type="button" class="apply__upload-remove" (click)="removeFile('criminalRecordDoc')">✕</button>
+                        } @else {
+                        <span class="apply__upload-hint">{{ t('doctorApply.uploadHint') }}</span>
+                        <input type="file" class="apply__upload-input"
+                            (change)="onFileSelected('criminalRecordDoc', $event)" accept=".pdf,.jpg,.jpeg,.png" />
+                        }
+                        @if (fileErrors['criminalRecordDoc']) {
+                        <small class="apply__error" role="alert">{{ t('doctorApply.docRequired') }}</small>
+                        }
+                    </div>
+
+                    <!-- Passport Photo -->
+                    <div class="apply__upload-zone" (drop)="onFileDrop('passportPhotoDoc', $event)"
+                        (dragover)="onDragOver($event)"
+                        [class.apply__upload-zone--filled]="getFileName('passportPhotoDoc')"
+                        [class.apply__upload-zone--error]="fileErrors['passportPhotoDoc']">
+                        <i class="pi pi-camera apply__upload-icon"></i>
+                        <span class="apply__upload-label">{{ t('doctorApply.passportPhotoDoc') }}</span>
+                        @if (getFileName('passportPhotoDoc')) {
+                        <span class="apply__upload-file">{{ getFileName('passportPhotoDoc') }}</span>
+                        <button type="button" class="apply__upload-remove" (click)="removeFile('passportPhotoDoc')">✕</button>
+                        } @else {
+                        <span class="apply__upload-hint">{{ t('doctorApply.uploadHint') }}</span>
+                        <input type="file" class="apply__upload-input"
+                            (change)="onFileSelected('passportPhotoDoc', $event)" accept=".jpg,.jpeg,.png" />
+                        }
+                        @if (fileErrors['passportPhotoDoc']) {
+                        <small class="apply__error" role="alert">{{ t('doctorApply.docRequired') }}</small>
+                        }
+                    </div>
+
+                </div>
+
+                <!-- Specialty Docs (multiple) -->
+                <div class="apply__field">
+                    <label class="apply__label">{{ t('doctorApply.specialtyDocs') }}</label>
+                    <div class="apply__upload-zone apply__upload-zone--multi"
+                        (drop)="onSpecialtyDocsDrop($event)" (dragover)="onDragOver($event)"
+                        [class.apply__upload-zone--error]="fileErrors['specialtyDocs']">
+                        <i class="pi pi-folder-open apply__upload-icon"></i>
+                        <span class="apply__upload-hint">{{ t('doctorApply.uploadMultiHint') }}</span>
+                        <input type="file" class="apply__upload-input" multiple
+                            (change)="onSpecialtyDocsSelected($event)" accept=".pdf,.jpg,.jpeg,.png" />
+                    </div>
+                    @if (specialtyDocsFiles.length > 0) {
+                    <div class="apply__upload-filelist">
+                        @for (file of specialtyDocsFiles; track $index) {
+                        <div class="apply__upload-filelist-item">
+                            <i class="pi pi-file"></i>
+                            <span>{{ file.name }}</span>
+                            <button type="button" class="apply__upload-remove-sm"
+                                (click)="removeSpecialtyDoc($index)">
+                                <i class="pi pi-times"></i>
+                            </button>
+                        </div>
+                        }
+                    </div>
+                    }
+                    @if (fileErrors['specialtyDocs']) {
+                    <small class="apply__error" role="alert">{{ t('doctorApply.specialtyDocsRequired') }}</small>
+                    }
+                </div>
+
+                }
+
+                <!-- ═══════════════════════════════ STEP 5 — Review ═══════════════════════════════ -->
+                @if (currentStep() === 5) {
+
+                <div class="apply__review">
+                    <!-- Personal Info -->
+                    <div class="apply__review-section">
+                        <h3 class="apply__review-title">
+                            <i class="pi pi-user"></i> {{ t('doctorApply.subtitleStep1') }}
+                        </h3>
+                        <div class="apply__review-grid">
+                            <div class="apply__review-item">
+                                <span class="apply__review-label">{{ t('doctorApply.firstName') }}</span>
+                                <span class="apply__review-value">{{ f['firstName'].value }}</span>
+                            </div>
+                            <div class="apply__review-item">
+                                <span class="apply__review-label">{{ t('doctorApply.lastName') }}</span>
+                                <span class="apply__review-value">{{ f['lastName'].value }}</span>
+                            </div>
+                            <div class="apply__review-item">
+                                <span class="apply__review-label">{{ t('doctorApply.email') }}</span>
+                                <span class="apply__review-value">{{ f['email'].value }}</span>
+                            </div>
+                            <div class="apply__review-item">
+                                <span class="apply__review-label">{{ t('doctorApply.phone') }}</span>
+                                <span class="apply__review-value">{{ f['phone'].value }}</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Professional Info -->
+                    <div class="apply__review-section">
+                        <h3 class="apply__review-title">
+                            <i class="pi pi-briefcase"></i> {{ t('doctorApply.subtitleStep2') }}
+                        </h3>
+                        <div class="apply__review-grid">
+                            <div class="apply__review-item">
+                                <span class="apply__review-label">{{ t('doctorApply.nationalIdNumber') }}</span>
+                                <span class="apply__review-value">{{ f['nationalIdNumber'].value }}</span>
+                            </div>
+                            <div class="apply__review-item">
+                                <span class="apply__review-label">{{ t('doctorApply.lopNumber') }}</span>
+                                <span class="apply__review-value">{{ f['lopNumber'].value }}</span>
+                            </div>
+                            <div class="apply__review-item">
+                                <span class="apply__review-label">{{ t('doctorApply.mophLicenseNumber') }}</span>
+                                <span class="apply__review-value">{{ f['mophLicenseNumber'].value }}</span>
+                            </div>
+                            <div class="apply__review-item">
+                                <span class="apply__review-label">{{ t('doctorApply.specialties') }}</span>
+                                <span class="apply__review-value">{{ specialtiesList.join(', ') }}</span>
+                            </div>
+                            <div class="apply__review-item">
+                                <span class="apply__review-label">{{ t('doctorApply.medicalSchool') }}</span>
+                                <span class="apply__review-value">{{ f['medicalSchool'].value }}</span>
+                            </div>
+                            <div class="apply__review-item">
+                                <span class="apply__review-label">{{ t('doctorApply.graduationYear') }}</span>
+                                <span class="apply__review-value">{{ f['graduationYear'].value }}</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Locations -->
+                    <div class="apply__review-section">
+                        <h3 class="apply__review-title">
+                            <i class="pi pi-map-marker"></i> {{ t('doctorApply.subtitleStep3') }}
+                        </h3>
+                        <p class="apply__review-summary">
+                            {{ t('doctorApply.reviewClinics', { count: clinics.length }) }},
+                            {{ t('doctorApply.reviewHospitals', { count: hospitals.length }) }}
+                        </p>
+                    </div>
+
+                    <!-- Documents -->
+                    <div class="apply__review-section">
+                        <h3 class="apply__review-title">
+                            <i class="pi pi-file"></i> {{ t('doctorApply.subtitleStep4') }}
+                        </h3>
+                        <p class="apply__review-summary">
+                            {{ t('doctorApply.reviewDocsCount', { count: specialtyDocsFiles.length }) }}
+                        </p>
+                    </div>
+                </div>
+
+                @if (submitError()) {
+                <div class="apply__submit-error" role="alert">
+                    <i class="pi pi-exclamation-circle"></i>
+                    <span>{{ t('doctorApply.' + submitError()) }}</span>
+                </div>
+                }
+
+                }
+
+                <!-- ═══════════════════════════════ Navigation Buttons ═══════════════════════════════ -->
+                <div class="apply__nav-buttons">
+                    @if (currentStep() > 1) {
+                    <p-button type="button" [label]="t('doctorApply.back')" [rounded]="true"
+                        styleClass="apply__back-btn" severity="secondary" [outlined]="true" (onClick)="onBack()" />
+                    }
+                    <p-button type="submit"
+                        [label]="currentStep() < totalSteps ? t('doctorApply.continue') : (submitting() ? t('doctorApply.submitting') : t('doctorApply.submit'))"
+                        [rounded]="true" styleClass="apply__submit" severity="success"
+                        [disabled]="submitting()" />
+                </div>
+
+                <p class="apply__footer-text">
+                    {{ t('doctorApply.alreadyApplied') }}
+                    <a routerLink="/login" class="apply__link">{{ t('doctorApply.signIn') }}</a>
+                </p>
+            </form>
+
+            } @else {
+            <!-- ═══════════════════════════════ Success View ═══════════════════════════════ -->
+            <div class="apply__success">
+                <div class="apply__success-icon">
+                    <i class="pi pi-check-circle"></i>
+                </div>
+                <h2>{{ t('doctorApply.successHeading') }}</h2>
+                <p>{{ t('doctorApply.successMessage') }}</p>
+                <p-button [label]="t('doctorApply.backToHome')" [rounded]="true" styleClass="apply__submit"
+                    severity="success" routerLink="/" />
+            </div>
+            }
+        </div>
+    </main>
+
+    <!-- RIGHT: Image side -->
+    <div class="apply__image-side">
+        <div class="apply__image-overlay"></div>
+        <img src="images/signup-hero.png" alt="Doctor applying to TobCare" class="apply__hero-img" />
+        <div class="apply__image-quote">
+            <blockquote>
+                <em>"{{ t('doctorApply.imageQuote') }}"</em>
+            </blockquote>
+        </div>
+    </div>
+
+</div>

@@ -1,0 +1,99 @@
+<div class="login" *transloco="let t">
+
+  <!-- LEFT: Form side -->
+  <main class="login__form-side">
+    <div class="login__form-wrapper">
+
+      <!-- Logo -->
+      <a routerLink="/" class="login__logo">
+        <img src="logo.png" alt="TobCare" width="32" height="32">
+        <span class="logo-tob">Tob</span><span class="logo-care">Care</span>
+      </a>
+
+      <!-- Heading -->
+      <div class="login__heading">
+        <h1>
+          <span class="weight-light">{{ t('login.heading1') }}</span> <em class="weight-bold">{{ t('login.heading2') }}</em>
+        </h1>
+        <p class="login__subtitle">
+          {{ t('login.subtitle') }}
+        </p>
+      </div>
+
+      @if (errorMessage()) {
+        <div class="login__error-banner" role="alert">
+          <i class="pi pi-exclamation-triangle"></i>
+          <span>{{ errorMessage() }}</span>
+        </div>
+      }
+
+      <!-- Form -->
+      <form [formGroup]="form" (ngSubmit)="onSubmit()" class="login__form" autocomplete="on">
+
+        <!-- Email -->
+        <div class="login__field">
+          <label for="email" class="login__label">{{ t('login.email') }}</label>
+          <input pInputText id="email" formControlName="email" type="email"
+            [placeholder]="t('login.emailPlaceholder')" class="login__input"
+            autocomplete="email"
+            [attr.aria-invalid]="f['email'].invalid && f['email'].touched"
+            [class.ng-invalid-shown]="f['email'].invalid && f['email'].touched" />
+          @if (f['email'].invalid && f['email'].touched) {
+            <small class="login__error" role="alert">
+              @if (f['email'].errors?.['required']) {
+                {{ t('login.emailRequired') }}
+              } @else {
+                {{ t('login.emailInvalid') }}
+              }
+            </small>
+          }
+        </div>
+
+        <!-- Password -->
+        <div class="login__field">
+          <label for="password" class="login__label">{{ t('login.password') }}</label>
+          <input pInputText id="password" formControlName="password" type="password"
+            [placeholder]="t('login.passwordPlaceholder')" class="login__input"
+            autocomplete="current-password"
+            [attr.aria-invalid]="f['password'].invalid && f['password'].touched"
+            [class.ng-invalid-shown]="f['password'].invalid && f['password'].touched" />
+          @if (f['password'].invalid && f['password'].touched) {
+            <small class="login__error" role="alert">
+              {{ t('login.passwordRequired') }}
+            </small>
+          }
+        </div>
+
+        <!-- Submit -->
+        <button pButton type="submit" [label]="t('login.submit')"
+          class="login__submit"
+          [disabled]="submitting()"
+          [loading]="submitting()">
+        </button>
+
+      </form>
+
+      <!-- Links -->
+      <div class="login__links">
+        <p>
+          {{ t('login.noAccountPatient') }}
+          <a routerLink="/patient/signup" class="login__link">{{ t('login.signUpPatient') }}</a>
+        </p>
+        <p>
+          {{ t('login.noAccountDoctor') }}
+          <a routerLink="/doctor/apply" class="login__link">{{ t('login.applyDoctor') }}</a>
+        </p>
+      </div>
+
+    </div>
+  </main>
+
+  <!-- RIGHT: Brand side -->
+  <aside class="login__brand-side">
+    <div class="login__brand-content">
+      <h2>{{ t('login.brandTitle') }}</h2>
+      <p>{{ t('login.brandSubtitle') }}</p>
+    </div>
+  </aside>
+
+</div>

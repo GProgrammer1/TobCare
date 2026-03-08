@@ -1,0 +1,314 @@
+/* ─── Admin Layout ─── */
+$sidebar-width: 260px;
+$sidebar-collapsed-width: 68px;
+$sidebar-bg: #1a2e28;
+$sidebar-text: #e8e0d6;
+$sidebar-active: #2d5a4a;
+$content-bg: #f5f0e8;
+$transition: 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+
+.admin {
+    display: flex;
+    min-height: 100vh;
+    background: $content-bg;
+
+    &--collapsed {
+        .admin__sidebar {
+            width: $sidebar-collapsed-width;
+        }
+        .admin__content {
+            margin-left: $sidebar-collapsed-width;
+        }
+    }
+}
+
+/* ─── Sidebar ─── */
+.admin__sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    width: $sidebar-width;
+    background: $sidebar-bg;
+    color: $sidebar-text;
+    display: flex;
+    flex-direction: column;
+    transition: width $transition;
+    z-index: 100;
+    overflow: hidden;
+}
+
+.admin__sidebar-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 20px 16px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.admin__logo {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    text-decoration: none;
+    color: inherit;
+}
+
+.admin__logo-icon {
+    width: 36px;
+    height: 36px;
+    background: var(--sage);
+    color: var(--cream);
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--font-display);
+    font-size: 20px;
+    font-weight: 700;
+    flex-shrink: 0;
+}
+
+.admin__logo-text {
+    font-family: var(--font-display);
+    font-size: 20px;
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+.admin__collapse-btn {
+    background: none;
+    border: none;
+    color: $sidebar-text;
+    font-size: 18px;
+    cursor: pointer;
+    padding: 4px 8px;
+    border-radius: 6px;
+    transition: background 0.2s;
+    flex-shrink: 0;
+
+    &:hover {
+        background: rgba(255, 255, 255, 0.08);
+    }
+}
+
+/* ─── Navigation ─── */
+.admin__nav {
+    flex: 1;
+    padding: 16px 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.admin__nav-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 14px;
+    border-radius: 10px;
+    color: $sidebar-text;
+    text-decoration: none;
+    font-family: var(--font-body);
+    font-size: 15px;
+    font-weight: 400;
+    transition: background 0.2s, color 0.2s;
+    white-space: nowrap;
+    cursor: pointer;
+
+    &:hover {
+        background: rgba(255, 255, 255, 0.06);
+    }
+
+    &--active {
+        background: $sidebar-active;
+        color: #fff;
+        font-weight: 500;
+    }
+}
+
+.admin__nav-icon {
+    font-size: 18px;
+    flex-shrink: 0;
+    width: 24px;
+    text-align: center;
+}
+
+.admin__nav-label {
+    white-space: nowrap;
+    overflow: hidden;
+}
+
+/* ─── Sidebar Footer ─── */
+.admin__sidebar-footer {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 16px;
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+    font-size: 14px;
+    white-space: nowrap;
+}
+
+/* ─── Main Content ─── */
+.admin__content {
+    flex: 1;
+    margin-left: $sidebar-width;
+    padding: 0 32px 32px;
+    min-height: 100vh;
+    transition: margin-left $transition;
+    background: $content-bg;
+}
+
+/* ─── Top Bar ─── */
+.admin__topbar {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    padding: 16px 0;
+    margin-bottom: 8px;
+}
+
+.admin__topbar-spacer {
+    flex: 1;
+}
+
+.admin__notif-wrapper {
+    position: relative;
+}
+
+.admin__notif-bell {
+    background: none;
+    border: none;
+    font-size: 22px;
+    cursor: pointer;
+    position: relative;
+    padding: 6px 10px;
+    border-radius: 8px;
+    transition: background 0.2s;
+
+    &:hover {
+        background: rgba(45, 90, 74, 0.06);
+    }
+}
+
+.admin__notif-badge {
+    position: absolute;
+    top: 2px;
+    right: 2px;
+}
+
+/* ─── Notification Panel ─── */
+.admin__notif-panel {
+    position: absolute;
+    top: 100%;
+    right: 0;
+    width: 360px;
+    max-height: 440px;
+    background: #fff;
+    border-radius: 14px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12);
+    z-index: 200;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+}
+
+.admin__notif-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 16px 20px;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+}
+
+.admin__notif-title {
+    font-family: var(--font-display);
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--text);
+}
+
+.admin__notif-mark-all {
+    background: none;
+    border: none;
+    color: var(--sage);
+    font-family: var(--font-body);
+    font-size: 13px;
+    font-weight: 500;
+    cursor: pointer;
+    padding: 4px 8px;
+    border-radius: 6px;
+    transition: background 0.2s;
+
+    &:hover {
+        background: rgba(45, 90, 74, 0.06);
+    }
+}
+
+.admin__notif-list {
+    overflow-y: auto;
+    flex: 1;
+}
+
+.admin__notif-item {
+    padding: 14px 20px;
+    cursor: pointer;
+    transition: background 0.15s;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.03);
+
+    &:hover {
+        background: rgba(45, 90, 74, 0.03);
+    }
+
+    &--unread {
+        background: rgba(45, 90, 74, 0.05);
+        border-left: 3px solid var(--sage);
+    }
+}
+
+.admin__notif-item-title {
+    font-family: var(--font-body);
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--text);
+    margin-bottom: 4px;
+}
+
+.admin__notif-item-message {
+    font-family: var(--font-body);
+    font-size: 13px;
+    color: var(--text-light);
+    line-height: 1.4;
+    margin-bottom: 4px;
+}
+
+.admin__notif-item-time {
+    font-family: var(--font-body);
+    font-size: 11px;
+    color: var(--text-light);
+    opacity: 0.7;
+}
+
+.admin__notif-empty {
+    padding: 32px 20px;
+    text-align: center;
+    font-family: var(--font-body);
+    font-size: 14px;
+    color: var(--text-light);
+}
+
+/* ─── Responsive ─── */
+@media (max-width: 768px) {
+    .admin__sidebar {
+        width: $sidebar-collapsed-width;
+    }
+    .admin__content {
+        margin-left: $sidebar-collapsed-width;
+    }
+    .admin__logo-text,
+    .admin__nav-label,
+    .admin__sidebar-footer .admin__nav-label {
+        display: none;
+    }
+}

@@ -1,0 +1,985 @@
+/* =========================================
+   TobCare Landing — Component Styles
+   ========================================= */
+
+:host {
+    display: block;
+    overflow-x: hidden;
+    max-width: 100%;
+}
+
+/* ---------- Shared Helpers ---------- */
+.weight-light {
+    font-weight: 400;
+    font-style: italic;
+}
+
+.weight-bold {
+    font-weight: 700;
+    font-style: italic;
+}
+
+.section-title {
+    font-family: var(--font-display);
+    font-size: var(--text-section);
+    text-align: center;
+    margin-bottom: 56px;
+    color: var(--text);
+}
+
+/* =========================================
+   1. NAVBAR
+   ========================================= */
+.navbar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 1000;
+    transition: background 0.4s var(--ease-out), box-shadow 0.4s var(--ease-out);
+
+    &.scrolled {
+        background: rgba(245, 240, 232, 0.95);
+        backdrop-filter: blur(12px);
+        box-shadow: 0 1px 24px rgba(13, 31, 26, 0.06);
+    }
+
+    &__inner {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 20px 32px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
+
+    &__logo {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        font-family: var(--font-display);
+        font-size: 28px;
+        font-style: italic;
+        letter-spacing: -0.5px;
+
+        .logo-tob {
+            font-weight: 400;
+            color: var(--text);
+        }
+
+        .logo-care {
+            font-weight: 700;
+            color: var(--sage);
+        }
+    }
+
+    &__logo-img {
+        width: 36px;
+        height: 36px;
+        object-fit: contain;
+        border-radius: 6px;
+    }
+
+    &__links {
+        display: flex;
+        gap: 36px;
+
+        a {
+            font-family: var(--font-body);
+            font-size: var(--text-cta);
+            font-weight: 400;
+            color: var(--text);
+            letter-spacing: 0.02em;
+            position: relative;
+            transition: color 0.3s ease;
+
+            &::after {
+                content: '';
+                position: absolute;
+                bottom: -4px;
+                left: 0;
+                width: 0;
+                height: 1.5px;
+                background: var(--sage);
+                transition: width 0.3s var(--ease-out);
+            }
+
+            &:hover {
+                color: var(--sage);
+
+                &::after {
+                    width: 100%;
+                }
+            }
+        }
+    }
+
+    &__actions {
+        display: flex;
+        align-items: center;
+        gap: 16px;
+    }
+
+    // PrimeNG button override
+    :host ::ng-deep .navbar__cta {
+        background: var(--sage) !important;
+        border-color: var(--sage) !important;
+        font-family: var(--font-body) !important;
+        font-size: var(--text-cta) !important;
+        font-weight: 500 !important;
+        letter-spacing: 0.1em !important;
+        padding: 8px 28px !important;
+        transition: background 0.3s ease, transform 0.2s ease !important;
+
+        &:hover {
+            background: var(--mint) !important;
+            border-color: var(--mint) !important;
+            transform: translateY(-1px);
+        }
+    }
+}
+
+/* ---------- Language Switcher ---------- */
+.lang-switch {
+    font-family: var(--font-body);
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--text);
+    background: transparent;
+    border: 1.5px solid var(--sage);
+    border-radius: 40px;
+    padding: 6px 16px;
+    cursor: pointer;
+    transition: background 0.3s ease, color 0.3s ease, transform 0.2s ease;
+    letter-spacing: 0.04em;
+    line-height: 1;
+    white-space: nowrap;
+
+    &:hover {
+        background: var(--sage);
+        color: var(--cream);
+        transform: translateY(-1px);
+    }
+}
+
+/* =========================================
+   2. HERO
+   ========================================= */
+.hero {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+    padding: 120px 32px 80px;
+
+    &__blobs {
+        position: absolute;
+        inset: 0;
+        pointer-events: none;
+    }
+
+    &__blob {
+        position: absolute;
+        border-radius: 50%;
+        filter: blur(80px);
+        animation: blobDrift 20s ease-in-out infinite alternate;
+
+        &--1 {
+            width: 600px;
+            height: 600px;
+            background: var(--sage);
+            opacity: 0.08;
+            top: -10%;
+            right: -5%;
+            animation-duration: 22s;
+        }
+
+        &--2 {
+            width: 450px;
+            height: 450px;
+            background: var(--mint);
+            opacity: 0.07;
+            bottom: 5%;
+            left: -5%;
+            animation-duration: 18s;
+            animation-delay: -5s;
+        }
+
+        &--3 {
+            width: 350px;
+            height: 350px;
+            background: var(--gold);
+            opacity: 0.05;
+            top: 30%;
+            left: 40%;
+            animation-duration: 25s;
+            animation-delay: -10s;
+        }
+    }
+
+    &__content {
+        position: relative;
+        z-index: 1;
+        text-align: center;
+        max-width: 800px;
+    }
+
+    &__headline {
+        font-family: var(--font-display);
+        font-size: var(--text-hero);
+        line-height: 1.05;
+        color: var(--text);
+        margin-bottom: 28px;
+
+        .weight-light {
+            font-weight: 400;
+        }
+
+        .weight-bold {
+            color: var(--sage);
+        }
+    }
+
+    &__sub {
+        font-family: var(--font-body);
+        font-size: 20px;
+        font-weight: 300;
+        color: var(--text-light);
+        max-width: 520px;
+        margin: 0 auto 44px;
+        line-height: 1.6;
+    }
+
+    // PrimeNG button override
+    :host ::ng-deep .hero__cta {
+        background: var(--sage) !important;
+        border-color: var(--sage) !important;
+        font-family: var(--font-body) !important;
+        font-size: var(--text-cta) !important;
+        font-weight: 500 !important;
+        letter-spacing: 0.12em !important;
+        padding: 14px 48px !important;
+        transition: background 0.3s ease, transform 0.25s var(--ease-out),
+            box-shadow 0.3s ease !important;
+
+        &:hover {
+            background: var(--mint) !important;
+            border-color: var(--mint) !important;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 32px rgba(45, 90, 74, 0.25) !important;
+        }
+    }
+
+    &__scroll-indicator {
+        position: absolute;
+        bottom: 32px;
+        left: 50%;
+        transform: translateX(-50%);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 8px;
+
+        span {
+            font-family: var(--font-body);
+            font-size: var(--text-label);
+            color: var(--text-light);
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+        }
+    }
+
+    &__scroll-line {
+        width: 1px;
+        height: 48px;
+        background: linear-gradient(to bottom, var(--sage), transparent);
+        animation: scrollPulse 2s ease-in-out infinite;
+    }
+}
+
+@keyframes blobDrift {
+    0% {
+        transform: translate(0, 0) scale(1);
+    }
+
+    33% {
+        transform: translate(30px, -20px) scale(1.05);
+    }
+
+    66% {
+        transform: translate(-20px, 15px) scale(0.95);
+    }
+
+    100% {
+        transform: translate(10px, -10px) scale(1.02);
+    }
+}
+
+@keyframes scrollPulse {
+
+    0%,
+    100% {
+        opacity: 0.3;
+        transform: scaleY(0.6);
+    }
+
+    50% {
+        opacity: 1;
+        transform: scaleY(1);
+    }
+}
+
+/* =========================================
+   3. STAT BREAK
+   ========================================= */
+.stats {
+    background: var(--deep);
+    padding: var(--section-padding) 32px;
+
+    &__inner {
+        max-width: 900px;
+        margin: 0 auto;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 48px;
+    }
+
+    &__item {
+        text-align: center;
+        flex: 1;
+    }
+
+    &__number {
+        font-family: var(--font-display);
+        font-weight: 700;
+        font-size: var(--text-stat);
+        line-height: 1;
+        color: var(--blush);
+        display: block;
+    }
+
+    &__item--highlight &__number {
+        color: var(--gold);
+    }
+
+    &__unit {
+        font-family: var(--font-display);
+        font-weight: 400;
+        font-style: italic;
+        font-size: clamp(24px, 3vw, 36px);
+        color: var(--blush);
+        opacity: 0.7;
+        margin-left: 8px;
+    }
+
+    &__item--highlight &__unit {
+        color: var(--gold);
+        opacity: 0.7;
+    }
+
+    &__label {
+        font-family: var(--font-body);
+        font-size: var(--text-label);
+        font-weight: 400;
+        color: var(--text-light);
+        margin-top: 12px;
+        letter-spacing: 0.05em;
+        text-transform: uppercase;
+    }
+
+    &__divider {
+        color: var(--mint);
+        opacity: 0.5;
+        flex-shrink: 0;
+    }
+}
+
+/* =========================================
+   4. HOW IT WORKS
+   ========================================= */
+.how-it-works {
+    padding: var(--section-padding) 32px;
+    max-width: 1100px;
+    margin: 0 auto;
+
+    &__steps {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 48px;
+    }
+
+    &__step {
+        position: relative;
+        padding: 40px 32px 32px;
+        text-align: center;
+
+        &:nth-child(2) {
+            margin-top: 48px;
+        }
+    }
+
+    &__step-bg {
+        position: absolute;
+        top: -20px;
+        left: 50%;
+        transform: translateX(-50%);
+        font-family: var(--font-display);
+        font-weight: 700;
+        font-size: 140px;
+        line-height: 1;
+        color: var(--sage);
+        opacity: 0.06;
+        pointer-events: none;
+        user-select: none;
+    }
+
+    &__icon {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 64px;
+        height: 64px;
+        border-radius: 50%;
+        border: 1.5px solid var(--sage);
+        color: var(--sage);
+        margin-bottom: 20px;
+        position: relative;
+        z-index: 1;
+        transition: background 0.3s ease, color 0.3s ease;
+
+        .how-it-works__step:hover & {
+            background: var(--sage);
+            color: var(--cream);
+        }
+    }
+
+    &__step-title {
+        font-family: var(--font-display);
+        font-size: var(--text-subhead);
+        font-weight: 700;
+        font-style: italic;
+        color: var(--text);
+        margin-bottom: 12px;
+        position: relative;
+        z-index: 1;
+    }
+
+    &__step-desc {
+        font-family: var(--font-body);
+        font-size: var(--text-body);
+        font-weight: 300;
+        color: var(--text-light);
+        line-height: 1.65;
+        position: relative;
+        z-index: 1;
+    }
+}
+
+/* =========================================
+   5. DOCTOR FILMSTRIP
+   ========================================= */
+.filmstrip {
+    padding: var(--section-padding) 0;
+    overflow: hidden;
+
+    .section-title {
+        padding: 0 32px;
+    }
+
+    &__track {
+        display: flex;
+        gap: 28px;
+        padding: 20px 32px 40px;
+        overflow-x: auto;
+        min-width: 0;
+        /* Prevents flex from expanding parent */
+        scroll-snap-type: x mandatory;
+        scrollbar-width: none;
+        -ms-overflow-style: none;
+
+        &::-webkit-scrollbar {
+            display: none;
+        }
+    }
+
+    &__card {
+        flex: 0 0 260px;
+        background: var(--blush);
+        border-radius: 16px;
+        padding: 32px 24px;
+        text-align: center;
+        scroll-snap-align: center;
+        transition: transform 0.4s var(--ease-out), box-shadow 0.3s ease;
+
+        &:hover {
+            transform: translateY(-6px) rotate(0deg) !important;
+            box-shadow: 0 16px 48px rgba(13, 31, 26, 0.1);
+        }
+
+        &--rotated {
+            transform: rotate(-1.5deg);
+        }
+
+        &:nth-child(even):not(.filmstrip__card--rotated) {
+            transform: rotate(1deg);
+        }
+    }
+
+    &__avatar {
+        width: 80px;
+        height: 80px;
+        border-radius: 50%;
+        background: linear-gradient(135deg, var(--sage), var(--mint));
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto 16px;
+
+        span {
+            font-family: var(--font-display);
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--cream);
+        }
+    }
+
+    &__name {
+        font-family: var(--font-display);
+        font-size: 18px;
+        font-weight: 700;
+        color: var(--text);
+        margin-bottom: 4px;
+    }
+
+    &__specialty {
+        font-family: var(--font-body);
+        font-size: var(--text-label);
+        font-weight: 400;
+        color: var(--text-light);
+        margin-bottom: 16px;
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+    }
+
+    &__meta {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 8px;
+    }
+
+    &__rating {
+        display: flex;
+        align-items: center;
+        gap: 2px;
+    }
+
+    &__star {
+        color: var(--gold);
+        font-size: 14px;
+    }
+
+    &__rating-num {
+        font-family: var(--font-body);
+        font-size: var(--text-label);
+        font-weight: 500;
+        color: var(--text);
+        margin-left: 4px;
+    }
+
+    &__badge {
+        font-family: var(--font-body);
+        font-size: 11px;
+        font-weight: 500;
+        letter-spacing: 0.05em;
+        text-transform: uppercase;
+        background: var(--sage);
+        color: var(--cream);
+        padding: 4px 12px;
+        border-radius: 20px;
+
+        &--away {
+            background: transparent;
+            color: var(--text-light);
+            border: 1px solid var(--text-light);
+        }
+    }
+}
+
+/* =========================================
+   6. SPLIT AUDIENCE
+   ========================================= */
+.split {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    min-height: 70vh;
+    overflow-x: hidden;
+
+    &__patients {
+        background: var(--cream);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: var(--section-padding) 48px;
+        clip-path: polygon(0 0, 100% 0, 92% 100%, 0 100%);
+    }
+
+    &__doctors {
+        background: var(--deep);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: var(--section-padding) 48px;
+        clip-path: polygon(8% 0, 100% 0, 100% 100%, 0 100%);
+        margin-left: -4%;
+    }
+
+    &__content {
+        max-width: 400px;
+    }
+
+    &__title {
+        font-family: var(--font-display);
+        font-size: var(--text-section);
+        color: var(--text);
+        margin-bottom: 20px;
+
+        &--light {
+            color: var(--cream);
+        }
+    }
+
+    &__body {
+        font-family: var(--font-body);
+        font-size: var(--text-body);
+        font-weight: 300;
+        color: var(--text-light);
+        line-height: 1.7;
+        margin-bottom: 32px;
+
+        &--light {
+            color: rgba(245, 240, 232, 0.65);
+        }
+    }
+
+    // PrimeNG button overrides
+    :host ::ng-deep .split__cta--patient {
+        background: var(--sage) !important;
+        border-color: var(--sage) !important;
+        font-family: var(--font-body) !important;
+        font-size: var(--text-cta) !important;
+        font-weight: 500 !important;
+        letter-spacing: 0.1em !important;
+        padding: 12px 36px !important;
+        transition: all 0.3s ease !important;
+
+        &:hover {
+            background: var(--mint) !important;
+            border-color: var(--mint) !important;
+            transform: translateY(-1px);
+        }
+    }
+
+    :host ::ng-deep .split__cta--doctor {
+        border-color: var(--cream) !important;
+        color: var(--cream) !important;
+        font-family: var(--font-body) !important;
+        font-size: var(--text-cta) !important;
+        font-weight: 500 !important;
+        letter-spacing: 0.1em !important;
+        padding: 12px 36px !important;
+        transition: all 0.3s ease !important;
+
+        &:hover {
+            background: var(--cream) !important;
+            color: var(--deep) !important;
+            transform: translateY(-1px);
+        }
+    }
+}
+
+/* =========================================
+   7. TESTIMONIALS
+   ========================================= */
+.testimonials {
+    background: var(--blush);
+    padding: var(--section-padding) 32px;
+
+    &__inner {
+        max-width: 800px;
+        margin: 0 auto;
+        text-align: center;
+        position: relative;
+        min-height: 280px;
+    }
+
+    &__slide {
+        position: absolute;
+        inset: 0;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        opacity: 0;
+        transform: translateY(12px);
+        transition: opacity 0.6s ease, transform 0.6s var(--ease-out);
+        pointer-events: none;
+
+        &.active {
+            opacity: 1;
+            transform: translateY(0);
+            pointer-events: auto;
+        }
+    }
+
+    &__quote {
+        font-family: var(--font-display);
+        font-size: clamp(24px, 3.5vw, 36px);
+        font-weight: 400;
+        font-style: italic;
+        color: var(--text);
+        line-height: 1.45;
+        margin-bottom: 36px;
+    }
+
+    &__author {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 4px;
+    }
+
+    &__name {
+        font-family: var(--font-body);
+        font-size: 16px;
+        font-weight: 500;
+        color: var(--text);
+    }
+
+    &__role {
+        font-family: var(--font-body);
+        font-size: var(--text-label);
+        font-weight: 400;
+        color: var(--text-light);
+        text-transform: uppercase;
+        letter-spacing: 0.1em;
+    }
+
+    &__dots {
+        position: absolute;
+        bottom: 0;
+        left: 50%;
+        transform: translateX(-50%);
+        display: flex;
+        gap: 12px;
+    }
+
+    &__dot {
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+        background: var(--text-light);
+        opacity: 0.3;
+        transition: opacity 0.3s ease, background 0.3s ease, transform 0.3s ease;
+        cursor: pointer;
+        border: none;
+        padding: 0;
+
+        &.active {
+            opacity: 1;
+            background: var(--sage);
+            transform: scale(1.3);
+        }
+
+        &:hover:not(.active) {
+            opacity: 0.6;
+        }
+    }
+}
+
+/* =========================================
+   8. FOOTER
+   ========================================= */
+.footer {
+    background: var(--deep);
+    padding: 64px 32px;
+
+    &__inner {
+        max-width: 800px;
+        margin: 0 auto;
+        text-align: center;
+    }
+
+    &__logo {
+        display: inline-block;
+        font-family: var(--font-display);
+        font-size: 32px;
+        font-style: italic;
+        letter-spacing: -0.5px;
+        margin-bottom: 20px;
+        text-decoration: none;
+        transition: opacity 0.2s ease;
+
+        .logo-tob {
+            font-weight: 400;
+            color: var(--cream);
+        }
+
+        .logo-care {
+            font-weight: 700;
+            color: var(--mint);
+        }
+
+        &:hover {
+            opacity: 0.9;
+        }
+    }
+
+    &__tagline {
+        font-family: var(--font-display);
+        font-size: clamp(28px, 4vw, 40px);
+        font-weight: 400;
+        font-style: italic;
+        color: var(--cream);
+        margin-bottom: 32px;
+    }
+
+    &__links {
+        display: flex;
+        justify-content: center;
+        gap: 32px;
+        margin-bottom: 24px;
+
+        a {
+            font-family: var(--font-body);
+            font-size: var(--text-label);
+            font-weight: 400;
+            color: var(--text-light);
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+            transition: color 0.3s ease;
+
+            &:hover {
+                color: var(--mint);
+            }
+        }
+    }
+
+    &__copy {
+        font-family: var(--font-body);
+        font-size: var(--text-label);
+        color: var(--text-light);
+        opacity: 0.5;
+    }
+}
+
+/* =========================================
+   RESPONSIVE
+   ========================================= */
+@media screen and (max-width: 768px) {
+
+    .navbar {
+        &__links {
+            display: none;
+        }
+
+        &__inner {
+            padding: 16px 20px;
+        }
+    }
+
+    .hero {
+        padding: 100px 20px 60px;
+
+        &__sub {
+            font-size: 17px;
+        }
+    }
+
+    .stats__inner {
+        flex-direction: column;
+        gap: 24px;
+    }
+
+    .stats__divider {
+        transform: rotate(90deg);
+    }
+
+    .how-it-works__steps {
+        grid-template-columns: 1fr;
+        gap: 32px;
+    }
+
+    .how-it-works__step:nth-child(2) {
+        margin-top: 0;
+    }
+
+    .split {
+        grid-template-columns: 1fr;
+    }
+
+    .split__patients {
+        clip-path: polygon(0 0, 100% 0, 100% 92%, 0 100%);
+        padding: 64px 24px;
+    }
+
+    .split__doctors {
+        clip-path: polygon(0 8%, 100% 0, 100% 100%, 0 100%);
+        margin-left: 0;
+        margin-top: -4%;
+        padding: 64px 24px;
+    }
+
+    .footer__links {
+        flex-wrap: wrap;
+        gap: 20px;
+    }
+}
+
+/* =========================================
+   RTL SUPPORT (Arabic)
+   ========================================= */
+:host-context([dir='rtl']) {
+
+    .navbar__links a::after {
+        left: auto;
+        right: 0;
+    }
+
+    .stats__divider svg {
+        transform: scaleX(-1);
+    }
+
+    .filmstrip__card--rotated {
+        transform: rotate(1.5deg);
+    }
+
+    .filmstrip__card:nth-child(even):not(.filmstrip__card--rotated) {
+        transform: rotate(-1deg);
+    }
+
+    .filmstrip__star {
+        direction: ltr;
+    }
+
+    .split__patients {
+        clip-path: polygon(0 0, 100% 0, 100% 100%, 8% 100%);
+    }
+
+    .split__doctors {
+        clip-path: polygon(0 0, 92% 0, 100% 100%, 0 100%);
+        margin-left: 0;
+        margin-right: -4%;
+    }
+
+    .hero__headline,
+    .section-title,
+    .split__title,
+    .testimonials__quote {
+        direction: rtl;
+    }
+}

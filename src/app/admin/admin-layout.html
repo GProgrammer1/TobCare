@@ -1,0 +1,69 @@
+<div class="admin" *transloco="let t" [class.admin--collapsed]="sidebarCollapsed()">
+    <!-- Sidebar -->
+    <aside class="admin__sidebar">
+        <div class="admin__sidebar-header">
+            <a routerLink="/admin" class="admin__logo">
+                <span class="admin__logo-icon">T</span>
+                <span class="admin__logo-text" *ngIf="!sidebarCollapsed()">TobCare</span>
+            </a>
+            <button class="admin__collapse-btn" (click)="toggleSidebar()">
+                {{ sidebarCollapsed() ? '☰' : '✕' }}
+            </button>
+        </div>
+
+        <nav class="admin__nav">
+            <a routerLink="/admin/applications"
+               routerLinkActive="admin__nav-item--active"
+               class="admin__nav-item">
+                <span class="admin__nav-icon">📋</span>
+                <span class="admin__nav-label" *ngIf="!sidebarCollapsed()">{{ t('admin.nav.applications') }}</span>
+            </a>
+        </nav>
+
+        <div class="admin__sidebar-footer">
+            <span class="admin__nav-icon">👤</span>
+            <span class="admin__nav-label" *ngIf="!sidebarCollapsed()">{{ t('admin.nav.admin') }}</span>
+        </div>
+    </aside>
+
+    <!-- Main content -->
+    <main class="admin__content">
+        <!-- Top bar with notification bell -->
+        <div class="admin__topbar">
+            <div class="admin__topbar-spacer"></div>
+            <div class="admin__notif-wrapper">
+                <button class="admin__notif-bell" (click)="toggleNotifPanel()">
+                    🔔
+                    <span class="admin__notif-badge" *ngIf="notifStore.unreadCount() > 0" pBadge [value]="notifStore.unreadCount().toString()" severity="danger"></span>
+                </button>
+
+                <!-- Notification dropdown -->
+                <div class="admin__notif-panel" *ngIf="notifStore.panelOpen()">
+                    <div class="admin__notif-header">
+                        <span class="admin__notif-title">{{ t('admin.notifications.title') }}</span>
+                        <button class="admin__notif-mark-all" (click)="markAllAsRead()" *ngIf="notifStore.unreadCount() > 0">
+                            {{ t('admin.notifications.markAllRead') }}
+                        </button>
+                    </div>
+                    <div class="admin__notif-list">
+                        <div
+                            *ngFor="let notif of notifStore.notifications()"
+                            class="admin__notif-item"
+                            [class.admin__notif-item--unread]="!notif.read"
+                            (click)="onNotifClick(notif)"
+                        >
+                            <div class="admin__notif-item-title">{{ notif.title }}</div>
+                            <div class="admin__notif-item-message">{{ notif.message }}</div>
+                            <div class="admin__notif-item-time">{{ notif.createdAt | date:'short' }}</div>
+                        </div>
+                        <div class="admin__notif-empty" *ngIf="notifStore.notifications().length === 0">
+                            {{ t('admin.notifications.empty') }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <router-outlet />
+    </main>
+</div>

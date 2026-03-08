@@ -1,0 +1,398 @@
+/* ─── Application Detail Page ─── */
+.detail {
+    max-width: 960px;
+    margin: 0 auto;
+}
+
+/* ── Loading ── */
+.detail__loading {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 400px;
+    color: var(--text-light);
+    font-size: 16px;
+}
+
+/* ── Top Bar ── */
+.detail__top-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 24px;
+}
+
+.detail__back-btn {
+    background: none;
+    border: none;
+    color: var(--sage);
+    font-family: var(--font-body);
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    padding: 8px 0;
+
+    &:hover {
+        text-decoration: underline;
+    }
+}
+
+/* ── Header / Avatar ── */
+.detail__header {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    margin-bottom: 32px;
+    padding-bottom: 24px;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+}
+
+.detail__avatar {
+    width: 64px;
+    height: 64px;
+    border-radius: 16px;
+    background: var(--sage);
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--font-display);
+    font-size: 22px;
+    font-weight: 700;
+    flex-shrink: 0;
+}
+
+.detail__header-info {
+    flex: 1;
+}
+
+.detail__name {
+    font-family: var(--font-display);
+    font-size: 28px;
+    font-weight: 600;
+    color: var(--text);
+    margin: 0 0 4px 0;
+}
+
+.detail__meta {
+    font-family: var(--font-body);
+    font-size: 14px;
+    color: var(--text-light);
+    margin: 0;
+    line-height: 1.5;
+}
+
+/* ── Sections ── */
+.detail__sections {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    margin-bottom: 32px;
+}
+
+.detail__section {
+    background: #fff;
+    border-radius: 14px;
+    padding: 24px;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.05);
+}
+
+.detail__section-title {
+    font-family: var(--font-display);
+    font-size: 20px;
+    font-weight: 600;
+    color: var(--text);
+    margin: 0 0 16px 0;
+    padding-bottom: 12px;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+}
+
+.detail__grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 16px;
+}
+
+.detail__field {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+
+    &--full {
+        grid-column: 1 / -1;
+        margin-top: 8px;
+    }
+}
+
+.detail__label {
+    font-family: var(--font-body);
+    font-size: 12px;
+    color: var(--text-light);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    font-weight: 600;
+}
+
+.detail__value {
+    font-family: var(--font-body);
+    font-size: 15px;
+    color: var(--text);
+    font-weight: 400;
+}
+
+.detail__tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+}
+
+/* ── Clinic / Hospital Cards ── */
+.detail__cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 12px;
+}
+
+.detail__card {
+    background: #f8f6f2;
+    border-radius: 10px;
+    padding: 16px;
+    border: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.detail__card-title {
+    font-family: var(--font-body);
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--text);
+    margin: 0 0 6px 0;
+}
+
+.detail__card-info {
+    font-family: var(--font-body);
+    font-size: 13px;
+    color: var(--text-light);
+    margin: 0 0 2px 0;
+}
+
+/* ── Documents ── */
+.detail__docs {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.detail__doc-link {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: #f8f6f2;
+    border: 1px solid rgba(0, 0, 0, 0.06);
+    border-radius: 10px;
+    padding: 10px 16px;
+    font-family: var(--font-body);
+    font-size: 14px;
+    color: var(--sage);
+    text-decoration: none;
+    transition: all 0.2s;
+
+    &:hover {
+        background: rgba(45, 90, 74, 0.06);
+        border-color: var(--sage);
+    }
+}
+
+.detail__doc-icon {
+    font-size: 18px;
+}
+
+/* ── Admin Notes ── */
+.detail__notes {
+    font-family: var(--font-body);
+    font-size: 14px;
+    color: var(--text);
+    line-height: 1.6;
+    background: #f8f6f2;
+    padding: 16px;
+    border-radius: 10px;
+    margin: 0;
+}
+
+/* ── Action Buttons ── */
+.detail__actions {
+    display: flex;
+    gap: 12px;
+    padding-top: 24px;
+    border-top: 1px solid rgba(0, 0, 0, 0.06);
+}
+
+.detail__approve-btn {
+    background: var(--sage) !important;
+    border: none !important;
+    border-radius: 10px !important;
+    color: #fff !important;
+    font-family: var(--font-body) !important;
+    font-size: 15px !important;
+    font-weight: 500 !important;
+    padding: 12px 32px !important;
+    cursor: pointer;
+
+    &:hover {
+        background: #245040 !important;
+    }
+}
+
+.detail__reject-btn {
+    background: transparent !important;
+    border: 1px solid #e74c3c !important;
+    border-radius: 10px !important;
+    color: #e74c3c !important;
+    font-family: var(--font-body) !important;
+    font-size: 15px !important;
+    font-weight: 500 !important;
+    padding: 12px 32px !important;
+    cursor: pointer;
+
+    &:hover {
+        background: #e74c3c !important;
+        color: #fff !important;
+    }
+}
+
+/* ── Dialog ── */
+:host ::ng-deep {
+    .detail__dialog {
+        .p-dialog {
+            background: #fff;
+            border-radius: 16px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.18), 0 2px 8px rgba(0, 0, 0, 0.08);
+            border: 1px solid rgba(0, 0, 0, 0.08);
+        }
+
+        .p-dialog-header {
+            background: #fff;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+            border-radius: 16px 16px 0 0;
+            padding: 16px 24px;
+        }
+
+        .p-dialog-content {
+            background: #fff;
+            padding: 20px 24px;
+        }
+
+        .p-dialog-footer {
+            background: #fff;
+            border-top: 1px solid rgba(0, 0, 0, 0.08);
+            border-radius: 0 0 16px 16px;
+            padding: 12px 24px 16px;
+        }
+    }
+
+    .p-overlay-mask {
+        background: rgba(0, 0, 0, 0.4);
+        backdrop-filter: blur(2px);
+    }
+}
+
+.detail__dialog-body {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.detail__dialog-text {
+    font-family: var(--font-body);
+    font-size: 15px;
+    color: var(--text);
+    margin: 0;
+    line-height: 1.5;
+}
+
+.detail__dialog-label {
+    font-family: var(--font-body);
+    font-size: 13px;
+    color: var(--text-light);
+    font-weight: 500;
+}
+
+.detail__dialog-textarea {
+    width: 100% !important;
+    border-radius: 10px !important;
+    border: 1px solid rgba(107, 140, 130, 0.25) !important;
+    font-family: var(--font-body) !important;
+    font-size: 14px !important;
+    padding: 10px 14px !important;
+    resize: vertical;
+
+    &:focus {
+        border-color: var(--sage) !important;
+        box-shadow: 0 0 0 2px rgba(45, 90, 74, 0.12) !important;
+    }
+}
+
+.detail__dialog-footer {
+    display: flex;
+    gap: 12px;
+    justify-content: flex-end;
+}
+
+.detail__dialog-cancel {
+    background: transparent !important;
+    border: 1px solid rgba(0, 0, 0, 0.15) !important;
+    border-radius: 8px !important;
+    color: var(--text) !important;
+    font-family: var(--font-body) !important;
+    font-size: 14px !important;
+    padding: 8px 20px !important;
+    cursor: pointer;
+}
+
+.detail__dialog-confirm--approve {
+    background: var(--sage) !important;
+    border: none !important;
+    border-radius: 8px !important;
+    color: #fff !important;
+    font-family: var(--font-body) !important;
+    font-size: 14px !important;
+    font-weight: 500 !important;
+    padding: 8px 20px !important;
+    cursor: pointer;
+
+    &:hover {
+        background: #245040 !important;
+    }
+}
+
+.detail__dialog-confirm--reject {
+    background: #e74c3c !important;
+    border: none !important;
+    border-radius: 8px !important;
+    color: #fff !important;
+    font-family: var(--font-body) !important;
+    font-size: 14px !important;
+    font-weight: 500 !important;
+    padding: 8px 20px !important;
+    cursor: pointer;
+
+    &:hover {
+        background: #c0392b !important;
+    }
+}
+
+/* ── Responsive ── */
+@media (max-width: 768px) {
+    .detail__header {
+        flex-direction: column;
+        text-align: center;
+    }
+    .detail__grid {
+        grid-template-columns: 1fr;
+    }
+    .detail__cards {
+        grid-template-columns: 1fr;
+    }
+    .detail__actions {
+        flex-direction: column;
+    }
+}

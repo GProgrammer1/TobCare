@@ -1,0 +1,229 @@
+<div class="detail" *transloco="let t">
+    <!-- Loading state -->
+    <div class="detail__loading" *ngIf="loading()">
+        <p>{{ t('admin.detail.loading') }}</p>
+    </div>
+
+    <div *ngIf="!loading() && application() as app">
+        <!-- Top bar -->
+        <div class="detail__top-bar">
+            <button class="detail__back-btn" (click)="goBack()">
+                ← {{ t('admin.detail.back') }}
+            </button>
+            <div class="detail__top-actions">
+                <p-tag [value]="app.status" [severity]="getStatusSeverity(app.status)" />
+            </div>
+        </div>
+
+        <!-- Applicant header -->
+        <div class="detail__header">
+            <div class="detail__avatar">
+                {{ app.firstName[0] }}{{ app.lastName[0] }}
+            </div>
+            <div class="detail__header-info">
+                <h1 class="detail__name">Dr. {{ app.firstName }} {{ app.lastName }}</h1>
+                <p class="detail__meta">{{ app.email }} • {{ app.phone }}</p>
+                <p class="detail__meta">{{ t('admin.detail.appliedOn') }} {{ app.createdAt | date:'longDate' }}</p>
+            </div>
+        </div>
+
+        <!-- Info sections -->
+        <div class="detail__sections">
+            <!-- Personal Information -->
+            <section class="detail__section">
+                <h2 class="detail__section-title">{{ t('admin.detail.personal') }}</h2>
+                <div class="detail__grid">
+                    <div class="detail__field">
+                        <span class="detail__label">{{ t('admin.detail.fullName') }}</span>
+                        <span class="detail__value">{{ app.firstName }} {{ app.lastName }}</span>
+                    </div>
+                    <div class="detail__field">
+                        <span class="detail__label">{{ t('admin.detail.email') }}</span>
+                        <span class="detail__value">{{ app.email }}</span>
+                    </div>
+                    <div class="detail__field">
+                        <span class="detail__label">{{ t('admin.detail.phone') }}</span>
+                        <span class="detail__value">{{ app.phone }}</span>
+                    </div>
+                    <div class="detail__field">
+                        <span class="detail__label">{{ t('admin.detail.dateOfBirth') }}</span>
+                        <span class="detail__value">{{ app.dateOfBirth | date:'mediumDate' }}</span>
+                    </div>
+                    <div class="detail__field">
+                        <span class="detail__label">{{ t('admin.detail.nationalId') }}</span>
+                        <span class="detail__value">{{ app.nationalIdNumber }}</span>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Professional Information -->
+            <section class="detail__section">
+                <h2 class="detail__section-title">{{ t('admin.detail.professional') }}</h2>
+                <div class="detail__grid">
+                    <div class="detail__field">
+                        <span class="detail__label">{{ t('admin.detail.lopNumber') }}</span>
+                        <span class="detail__value">{{ app.lopNumber }}</span>
+                    </div>
+                    <div class="detail__field">
+                        <span class="detail__label">{{ t('admin.detail.mophLicense') }}</span>
+                        <span class="detail__value">{{ app.mophLicenseNumber }}</span>
+                    </div>
+                    <div class="detail__field">
+                        <span class="detail__label">{{ t('admin.detail.specialist') }}</span>
+                        <span class="detail__value">{{ app.isSpecialist ? t('admin.detail.yes') : t('admin.detail.no') }}</span>
+                    </div>
+                    <div class="detail__field">
+                        <span class="detail__label">{{ t('admin.detail.medicalSchool') }}</span>
+                        <span class="detail__value">{{ app.medicalSchool }}</span>
+                    </div>
+                    <div class="detail__field">
+                        <span class="detail__label">{{ t('admin.detail.graduationCountry') }}</span>
+                        <span class="detail__value">{{ app.graduationCountry }}</span>
+                    </div>
+                    <div class="detail__field">
+                        <span class="detail__label">{{ t('admin.detail.graduationYear') }}</span>
+                        <span class="detail__value">{{ app.graduationYear }}</span>
+                    </div>
+                </div>
+
+                <div class="detail__field detail__field--full">
+                    <span class="detail__label">{{ t('admin.detail.specialties') }}</span>
+                    <div class="detail__tags">
+                        <p-tag *ngFor="let s of app.specialties" [value]="s" severity="info" />
+                    </div>
+                </div>
+
+                <div class="detail__field detail__field--full" *ngIf="app.acceptedInsurances.length">
+                    <span class="detail__label">{{ t('admin.detail.insurances') }}</span>
+                    <div class="detail__tags">
+                        <p-tag *ngFor="let ins of app.acceptedInsurances" [value]="ins" severity="secondary" />
+                    </div>
+                </div>
+            </section>
+
+            <!-- Clinics -->
+            <section class="detail__section" *ngIf="app.clinics.length">
+                <h2 class="detail__section-title">{{ t('admin.detail.clinics') }}</h2>
+                <div class="detail__cards">
+                    <div class="detail__card" *ngFor="let c of app.clinics">
+                        <h3 class="detail__card-title">{{ c.name }}</h3>
+                        <p class="detail__card-info">{{ c.governorate }}</p>
+                        <p class="detail__card-info" *ngIf="c.address">{{ c.address }}</p>
+                        <p class="detail__card-info" *ngIf="c.consultationFee">{{ t('admin.detail.fee') }}: ${{ c.consultationFee }}</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Hospitals -->
+            <section class="detail__section" *ngIf="app.hospitals.length">
+                <h2 class="detail__section-title">{{ t('admin.detail.hospitals') }}</h2>
+                <div class="detail__cards">
+                    <div class="detail__card" *ngFor="let h of app.hospitals">
+                        <h3 class="detail__card-title">{{ h.name }}</h3>
+                        <p class="detail__card-info">{{ h.governorate }}</p>
+                        <p class="detail__card-info" *ngIf="h.address">{{ h.address }}</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Documents -->
+            <section class="detail__section">
+                <h2 class="detail__section-title">{{ t('admin.detail.documents') }}</h2>
+                <div class="detail__docs">
+                    <a
+                        *ngFor="let doc of getSingleDocs()"
+                        [href]="doc.url"
+                        target="_blank"
+                        rel="noopener"
+                        class="detail__doc-link"
+                    >
+                        <span class="detail__doc-icon">📄</span>
+                        <span>{{ doc.label }}</span>
+                    </a>
+                </div>
+                <div class="detail__docs" *ngIf="app.specialtyDocs.length">
+                    <p class="detail__label" style="width: 100%; margin-bottom: 8px;">{{ t('admin.detail.specialtyDocs') }}</p>
+                    <a
+                        *ngFor="let url of app.specialtyDocs; let i = index"
+                        [href]="resolveFileUrl(url)"
+                        target="_blank"
+                        rel="noopener"
+                        class="detail__doc-link"
+                    >
+                        <span class="detail__doc-icon">📄</span>
+                        <span>{{ t('admin.detail.specialtyDoc') }} {{ i + 1 }}</span>
+                    </a>
+                </div>
+            </section>
+
+            <!-- Admin Notes (if any) -->
+            <section class="detail__section" *ngIf="app.adminNotes">
+                <h2 class="detail__section-title">{{ t('admin.detail.adminNotes') }}</h2>
+                <p class="detail__notes">{{ app.adminNotes }}</p>
+            </section>
+        </div>
+
+        <!-- Action buttons -->
+        <div class="detail__actions" *ngIf="app.status === 'PENDING'">
+            <button
+                pButton
+                class="detail__approve-btn"
+                (click)="openApproveDialog()"
+            >
+                {{ t('admin.detail.approve') }}
+            </button>
+            <button
+                pButton
+                class="detail__reject-btn"
+                (click)="openRejectDialog()"
+            >
+                {{ t('admin.detail.reject') }}
+            </button>
+        </div>
+    </div>
+
+    <!-- Confirm Dialog -->
+    <p-dialog
+        [(visible)]="showDialog"
+        [modal]="true"
+        [draggable]="false"
+        [resizable]="false"
+        [header]="dialogAction() === 'VERIFIED' ? t('admin.detail.confirmApprove') : t('admin.detail.confirmReject')"
+        [style]="{ width: '480px' }"
+        styleClass="detail__dialog"
+    >
+        <div class="detail__dialog-body">
+            <p class="detail__dialog-text">
+                {{ dialogAction() === 'VERIFIED'
+                    ? t('admin.detail.approveMessage')
+                    : t('admin.detail.rejectMessage') }}
+            </p>
+            <label class="detail__dialog-label">{{ t('admin.detail.notesLabel') }}</label>
+            <textarea
+                pTextarea
+                [(ngModel)]="adminNotes"
+                [rows]="4"
+                [placeholder]="t('admin.detail.notesPlaceholder')"
+                class="detail__dialog-textarea"
+            ></textarea>
+        </div>
+        <ng-template #footer>
+            <div class="detail__dialog-footer">
+                <button pButton class="detail__dialog-cancel" (click)="showDialog.set(false)">
+                    {{ t('admin.detail.cancel') }}
+                </button>
+                <button
+                    pButton
+                    [class]="dialogAction() === 'VERIFIED' ? 'detail__dialog-confirm--approve' : 'detail__dialog-confirm--reject'"
+                    (click)="confirmAction()"
+                    [disabled]="actionLoading()"
+                >
+                    {{ actionLoading()
+                        ? t('admin.detail.processing')
+                        : (dialogAction() === 'VERIFIED' ? t('admin.detail.approve') : t('admin.detail.reject'))
+                    }}
+                </button>
+            </div>
+        </ng-template>
+    </p-dialog>
+</div>

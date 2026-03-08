@@ -1,0 +1,636 @@
+<div class="signup" *transloco="let t">
+
+    <!-- LEFT: Form side -->
+    <main id="main-content" class="signup__form-side">
+        <div class="signup__form-wrapper">
+
+            <!-- Logo -->
+            <a routerLink="/" class="signup__logo">
+                <img src="logo.png" alt="TobCare" width="32" height="32">
+                <span class="logo-tob">Tob</span><span class="logo-care">Care</span>
+            </a>
+
+            @if (!showOtp()) {
+            <!-- Step indicator -->
+            <div class="signup__steps">
+                <div class="signup__step-bar" role="progressbar"
+                    [attr.aria-label]="'Progress: step ' + currentStep() + ' of ' + totalSteps"
+                    [attr.aria-valuenow]="currentStep()" aria-valuemin="1" [attr.aria-valuemax]="totalSteps">
+                    @for (s of [1, 2, 3, 4, 5]; track s) {
+                    <div class="signup__step-segment" [class.active]="s <= currentStep()"
+                        [class.current]="s === currentStep()"></div>
+                    }
+                </div>
+                <span class="signup__step-label">{{ t('signup.stepOf', { current: currentStep(), total: totalSteps })
+                    }}</span>
+            </div>
+
+            <!-- Heading -->
+            <div class="signup__heading">
+                <h1>
+                    <span class="weight-light">{{ t('signup.heading1') }}</span> <em class="weight-bold">{{
+                        t('signup.heading2') }}</em>
+                </h1>
+                <p class="signup__subtitle">
+                    @switch (currentStep()) {
+                    @case (1) { {{ t('signup.subtitle') }} }
+                    @case (2) { {{ t('signup.subtitleStep2') }} }
+                    @case (3) { {{ t('signup.subtitleStep3') }} }
+                    @case (4) { {{ t('signup.subtitleStep4') }} }
+                    @case (5) { {{ t('signup.subtitleStep5') }} }
+                    }
+                </p>
+            </div>
+
+            <!-- Form -->
+            <form [formGroup]="signupForm" (ngSubmit)="onContinue()" class="signup__form" autocomplete="off">
+
+                <!-- ═══════════════════════════════ STEP 1 — Account ═══════════════════════════════ -->
+                @if (currentStep() === 1) {
+
+                <div class="signup__row">
+                    <!-- First Name -->
+                    <div class="signup__field">
+                        <label for="firstName" class="signup__label">{{ t('signup.firstName') }}</label>
+                        <input pInputText id="firstName" formControlName="firstName"
+                            [placeholder]="t('signup.firstNamePlaceholder')" class="signup__input"
+                            [attr.aria-invalid]="f['firstName'].invalid && f['firstName'].touched"
+                            [attr.aria-describedby]="(f['firstName'].invalid && f['firstName'].touched) ? 'firstName-error' : null"
+                            [class.ng-invalid-shown]="f['firstName'].invalid && f['firstName'].touched" />
+                        @if (f['firstName'].invalid && f['firstName'].touched) {
+                        <small class="signup__error" id="firstName-error" role="alert">{{ t('signup.firstNameRequired')
+                            }}</small>
+                        }
+                    </div>
+
+                    <!-- Last Name -->
+                    <div class="signup__field">
+                        <label for="lastName" class="signup__label">{{ t('signup.lastName') }}</label>
+                        <input pInputText id="lastName" formControlName="lastName"
+                            [placeholder]="t('signup.lastNamePlaceholder')" class="signup__input"
+                            [attr.aria-invalid]="f['lastName'].invalid && f['lastName'].touched"
+                            [attr.aria-describedby]="(f['lastName'].invalid && f['lastName'].touched) ? 'lastName-error' : null"
+                            [class.ng-invalid-shown]="f['lastName'].invalid && f['lastName'].touched" />
+                        @if (f['lastName'].invalid && f['lastName'].touched) {
+                        <small class="signup__error" id="lastName-error" role="alert">{{ t('signup.lastNameRequired')
+                            }}</small>
+                        }
+                    </div>
+                </div>
+
+                <!-- Email -->
+                <div class="signup__field">
+                    <label for="email" class="signup__label">{{ t('signup.email') }}</label>
+                    <input pInputText id="email" formControlName="email" type="email"
+                        [placeholder]="t('signup.emailPlaceholder')" class="signup__input"
+                        [attr.aria-invalid]="f['email'].invalid && f['email'].touched"
+                        [attr.aria-describedby]="(f['email'].invalid && f['email'].touched) ? 'email-error' : null"
+                        [class.ng-invalid-shown]="f['email'].invalid && f['email'].touched" />
+                    @if (f['email'].invalid && f['email'].touched) {
+                    <small class="signup__error" id="email-error" role="alert">
+                        @if (f['email'].errors?.['required']) {
+                        {{ t('signup.emailRequired') }}
+                        } @else {
+                        {{ t('signup.emailInvalid') }}
+                        }
+                    </small>
+                    }
+                </div>
+
+                <!-- Phone Number -->
+                <div class="signup__field">
+                    <label for="phoneNumber" class="signup__label">{{ t('signup.phoneNumber') }}</label>
+                    <input pInputText id="phoneNumber" formControlName="phoneNumber" type="tel"
+                        [placeholder]="t('signup.phoneNumberPlaceholder')" class="signup__input"
+                        [attr.aria-invalid]="f['phoneNumber'].invalid && f['phoneNumber'].touched"
+                        [attr.aria-describedby]="(f['phoneNumber'].invalid && f['phoneNumber'].touched) ? 'phoneNumber-error' : null"
+                        [class.ng-invalid-shown]="f['phoneNumber'].invalid && f['phoneNumber'].touched" />
+                    @if (f['phoneNumber'].invalid && f['phoneNumber'].touched) {
+                    <small class="signup__error" id="phoneNumber-error" role="alert">
+                        @if (f['phoneNumber'].errors?.['required']) {
+                        {{ t('signup.phoneNumberRequired') }}
+                        } @else {
+                        {{ t('signup.phoneNumberInvalid') }}
+                        }
+                    </small>
+                    }
+                </div>
+
+                <!-- Password -->
+                <div class="signup__field">
+                    <label for="password" class="signup__label">{{ t('signup.password') }}</label>
+                    <input pInputText id="password" formControlName="password" type="password"
+                        [placeholder]="t('signup.passwordPlaceholder')" class="signup__input"
+                        [attr.aria-invalid]="f['password'].invalid && f['password'].touched"
+                        [attr.aria-describedby]="(f['password'].invalid && f['password'].touched) ? 'password-error' : null"
+                        [class.ng-invalid-shown]="f['password'].invalid && f['password'].touched" />
+                    @if (f['password'].invalid && f['password'].touched) {
+                    <small class="signup__error" id="password-error" role="alert">
+                        @if (f['password'].errors?.['required']) {
+                        {{ t('signup.passwordRequired') }}
+                        } @else if (f['password'].errors?.['minlength']) {
+                        {{ t('signup.passwordMinLength') }}
+                        } @else if (f['password'].errors?.['pattern']) {
+                        {{ t('signup.passwordPattern') }}
+                        } @else {
+                        {{ t('signup.passwordInvalid') }}
+                        }
+                    </small>
+                    }
+                </div>
+
+                <!-- Confirm Password -->
+                <div class="signup__field">
+                    <label for="confirmPassword" class="signup__label">{{ t('signup.confirmPassword') }}</label>
+                    <input pInputText id="confirmPassword" formControlName="confirmPassword" type="password"
+                        [placeholder]="t('signup.confirmPasswordPlaceholder')" class="signup__input"
+                        [attr.aria-invalid]="f['confirmPassword'].invalid && f['confirmPassword'].touched"
+                        [attr.aria-describedby]="(f['confirmPassword'].invalid && f['confirmPassword'].touched) ? 'confirmPassword-error' : null"
+                        [class.ng-invalid-shown]="f['confirmPassword'].invalid && f['confirmPassword'].touched" />
+                    @if (f['confirmPassword'].invalid && f['confirmPassword'].touched) {
+                    <small class="signup__error" id="confirmPassword-error" role="alert">
+                        @if (f['confirmPassword'].errors?.['required']) {
+                        {{ t('signup.confirmPasswordRequired') }}
+                        } @else if (f['confirmPassword'].errors?.['mismatch']) {
+                        {{ t('signup.confirmPasswordMismatch') }}
+                        }
+                    </small>
+                    }
+                </div>
+
+                }
+
+                <!-- ═══════════════════════════════ STEP 2 — Personal & Health ═══════════════════════════════ -->
+                @if (currentStep() === 2) {
+
+                <!-- Date of Birth -->
+                <div class="signup__field">
+                    <label for="dateOfBirth" class="signup__label">{{ t('signup.dateOfBirth') }}</label>
+                    <p-datepicker id="dateOfBirth" formControlName="dateOfBirth"
+                        [placeholder]="t('signup.dateOfBirthPlaceholder')" dateFormat="yy-mm-dd" [showIcon]="true"
+                        [maxDate]="today" appendTo="body" styleClass="signup__input-full"
+                        panelStyleClass="signup-datepicker-panel" [baseZIndex]="11000" [autoZIndex]="true"
+                        (onSelect)="onDateSelect($event)"
+                        [attr.aria-invalid]="f['dateOfBirth'].invalid && f['dateOfBirth'].touched"
+                        [attr.aria-describedby]="(f['dateOfBirth'].invalid && f['dateOfBirth'].touched) ? 'dob-error' : null" />
+                    @if (f['dateOfBirth'].invalid && f['dateOfBirth'].touched) {
+                    <small class="signup__error" id="dob-error" role="alert">{{ t('signup.dateOfBirthRequired')
+                        }}</small>
+                    }
+                </div>
+
+                <div class="signup__row">
+                    <!-- Gender -->
+                    <div class="signup__field">
+                        <label for="gender" class="signup__label">{{ t('signup.gender') }}</label>
+                        <p-select id="gender" formControlName="gender" [options]="genderOptions" optionLabel="label"
+                            optionValue="value" [placeholder]="t('signup.genderPlaceholder')" appendTo="body"
+                            styleClass="signup__input-full" panelStyleClass="signup-select-panel"
+                            [attr.aria-invalid]="f['gender'].invalid && f['gender'].touched"
+                            [attr.aria-describedby]="(f['gender'].invalid && f['gender'].touched) ? 'gender-error' : null" />
+                        @if (f['gender'].invalid && f['gender'].touched) {
+                        <small class="signup__error" id="gender-error" role="alert">{{ t('signup.genderRequired')
+                            }}</small>
+                        }
+                    </div>
+
+                    <!-- Blood Type -->
+                    <div class="signup__field">
+                        <label for="bloodType" class="signup__label">{{ t('signup.bloodType') }}</label>
+                        <p-select id="bloodType" formControlName="bloodType" [options]="bloodTypeOptions"
+                            optionLabel="label" optionValue="value" [placeholder]="t('signup.bloodTypePlaceholder')"
+                            appendTo="body" styleClass="signup__input-full" panelStyleClass="signup-select-panel"
+                            [attr.aria-invalid]="f['bloodType'].invalid && f['bloodType'].touched"
+                            [attr.aria-describedby]="(f['bloodType'].invalid && f['bloodType'].touched) ? 'bloodType-error' : null" />
+                        @if (f['bloodType'].invalid && f['bloodType'].touched) {
+                        <small class="signup__error" id="bloodType-error" role="alert">{{ t('signup.bloodTypeRequired')
+                            }}</small>
+                        }
+                    </div>
+                </div>
+
+                <div class="signup__row">
+                    <!-- Height -->
+                    <div class="signup__field">
+                        <label for="heightCm" class="signup__label">{{ t('signup.heightCm') }}</label>
+                        <p-inputnumber id="heightCm" formControlName="heightCm"
+                            [placeholder]="t('signup.heightCmPlaceholder')" suffix=" cm" [min]="1" [max]="300"
+                            [useGrouping]="false" styleClass="signup__input-full"
+                            [attr.aria-invalid]="f['heightCm'].invalid && f['heightCm'].touched"
+                            [attr.aria-describedby]="(f['heightCm'].invalid && f['heightCm'].touched) ? 'height-error' : null" />
+                        @if (f['heightCm'].invalid && f['heightCm'].touched) {
+                        <small class="signup__error" id="height-error" role="alert">{{ t('signup.heightRequired')
+                            }}</small>
+                        }
+                    </div>
+
+                    <!-- Weight -->
+                    <div class="signup__field">
+                        <label for="weightKg" class="signup__label">{{ t('signup.weightKg') }}</label>
+                        <p-inputnumber id="weightKg" formControlName="weightKg"
+                            [placeholder]="t('signup.weightKgPlaceholder')" suffix=" kg" [min]="1" [max]="700"
+                            [useGrouping]="false" styleClass="signup__input-full"
+                            [attr.aria-invalid]="f['weightKg'].invalid && f['weightKg'].touched"
+                            [attr.aria-describedby]="(f['weightKg'].invalid && f['weightKg'].touched) ? 'weight-error' : null" />
+                        @if (f['weightKg'].invalid && f['weightKg'].touched) {
+                        <small class="signup__error" id="weight-error" role="alert">{{ t('signup.weightRequired')
+                            }}</small>
+                        }
+                    </div>
+                </div>
+
+                }
+
+                <!-- ═══════════════════════════════ STEP 3 — Lifestyle ═══════════════════════════════ -->
+                @if (currentStep() === 3) {
+
+                <div class="signup__row">
+                    <!-- Drinking -->
+                    <div class="signup__field">
+                        <label for="drinkingStatus" class="signup__label">{{ t('signup.drinkingStatus') }}</label>
+                        <p-select id="drinkingStatus" formControlName="drinkingStatus" [options]="drinkingOptions"
+                            optionLabel="label" optionValue="value" [placeholder]="t('signup.drinkingPlaceholder')"
+                            appendTo="body" styleClass="signup__input-full" panelStyleClass="signup-select-panel" />
+                    </div>
+
+                    <!-- Smoking -->
+                    <div class="signup__field">
+                        <label for="smokingStatus" class="signup__label">{{ t('signup.smokingStatus') }}</label>
+                        <p-select id="smokingStatus" formControlName="smokingStatus" [options]="smokingOptions"
+                            optionLabel="label" optionValue="value" [placeholder]="t('signup.smokingPlaceholder')"
+                            appendTo="body" styleClass="signup__input-full" panelStyleClass="signup-select-panel" />
+                    </div>
+                </div>
+
+                <div class="signup__step-hint">
+                    <i class="pi pi-info-circle"></i>
+                    <span>{{ t('signup.lifestyleHint') }}</span>
+                </div>
+
+                }
+
+                <!-- ═══════════════════════════════ STEP 4 — Emergency Contacts ═══════════════════════════════ -->
+                @if (currentStep() === 4) {
+
+                <!-- Emergency Contacts -->
+                <fieldset class="signup__fieldset" formArrayName="emergencyContacts">
+                    <legend class="signup__fieldset-legend">
+                        <i class="pi pi-phone"></i>
+                        {{ t('signup.emergencyContacts') }}
+                    </legend>
+
+                    @for (contact of emergencyContacts.controls; track $index; let i = $index) {
+                    <div class="signup__array-card" [formGroupName]="i">
+                        <div class="signup__array-card-header">
+                            <span class="signup__array-card-number">{{ i + 1 }}</span>
+                            <button type="button" class="signup__remove-btn" (click)="removeEmergencyContact(i)"
+                                [attr.aria-label]="t('signup.removeContact')">
+                                <span aria-hidden="true">×</span>
+                            </button>
+                        </div>
+                        <div class="signup__row">
+                            <div class="signup__field">
+                                <label [for]="'ec-name-' + i" class="signup__label">{{ t('signup.contactName')
+                                    }}</label>
+                                <input pInputText [id]="'ec-name-' + i" formControlName="name"
+                                    [placeholder]="t('signup.contactNamePlaceholder')" class="signup__input"
+                                    [class.ng-invalid-shown]="contact.get('name')?.invalid && contact.get('name')?.touched" />
+                                @if (contact.get('name')?.invalid && contact.get('name')?.touched) {
+                                <small class="signup__error" role="alert">{{ t('signup.contactNameRequired') }}</small>
+                                }
+                            </div>
+                            <div class="signup__field">
+                                <label [for]="'ec-phone-' + i" class="signup__label">{{ t('signup.contactPhone')
+                                    }}</label>
+                                <input pInputText [id]="'ec-phone-' + i" formControlName="phoneNumber" type="tel"
+                                    [placeholder]="t('signup.contactPhonePlaceholder')" class="signup__input"
+                                    [class.ng-invalid-shown]="contact.get('phoneNumber')?.invalid && contact.get('phoneNumber')?.touched" />
+                                @if (contact.get('phoneNumber')?.invalid && contact.get('phoneNumber')?.touched) {
+                                <small class="signup__error" role="alert">{{ t('signup.contactPhoneRequired') }}</small>
+                                }
+                            </div>
+                        </div>
+                    </div>
+                    }
+
+                    <button type="button" class="signup__add-btn" (click)="addEmergencyContact()">
+                        <i class="pi pi-plus-circle"></i>
+                        {{ t('signup.addContact') }}
+                    </button>
+                </fieldset>
+
+                }
+
+                <!-- ═══════════════════════════════ STEP 5 — Medications ═══════════════════════════════ -->
+                @if (currentStep() === 5) {
+
+                <!-- Medications (first: add medication, then each card prompts for disease or allergy) -->
+                <fieldset class="signup__fieldset" formArrayName="medications">
+                    <legend class="signup__fieldset-legend">
+                        <i class="pi pi-box"></i>
+                        {{ t('signup.medications') }}
+                    </legend>
+
+                    @for (med of medications.controls; track $index; let i = $index) {
+                    <div class="signup__array-card" [formGroupName]="i">
+                        <div class="signup__array-card-header">
+                            <span class="signup__array-card-number">{{ i + 1 }}</span>
+                            <button type="button" class="signup__remove-btn" (click)="removeMedication(i)"
+                                [attr.aria-label]="t('signup.removeMedication')">
+                                <span aria-hidden="true">×</span>
+                            </button>
+                        </div>
+                        <div class="signup__field">
+                            <label [for]="'med-name-' + i" class="signup__label">{{ t('signup.medicationName')
+                                }}</label>
+                            <input pInputText [id]="'med-name-' + i" formControlName="name"
+                                [placeholder]="t('signup.medicationNamePlaceholder')" class="signup__input"
+                                [class.ng-invalid-shown]="med.get('name')?.invalid && med.get('name')?.touched" />
+                            @if (med.get('name')?.invalid && med.get('name')?.touched) {
+                            <small class="signup__error" role="alert">{{ t('signup.medicationNameRequired') }}</small>
+                            }
+                        </div>
+                        <div class="signup__row">
+                            <div class="signup__field">
+                                <label [for]="'med-dose-' + i" class="signup__label">{{ t('signup.dose') }}</label>
+                                <input pInputText [id]="'med-dose-' + i" formControlName="dose"
+                                    [placeholder]="t('signup.dosePlaceholder')" class="signup__input"
+                                    [class.ng-invalid-shown]="med.get('dose')?.invalid && med.get('dose')?.touched" />
+                                @if (med.get('dose')?.invalid && med.get('dose')?.touched) {
+                                <small class="signup__error" role="alert">{{ t('signup.doseRequired') }}</small>
+                                }
+                            </div>
+                            <div class="signup__field">
+                                <label [for]="'med-freq-' + i" class="signup__label">{{ t('signup.frequency') }}</label>
+                                <input pInputText [id]="'med-freq-' + i" formControlName="frequency"
+                                    [placeholder]="t('signup.frequencyPlaceholder')" class="signup__input"
+                                    [class.ng-invalid-shown]="med.get('frequency')?.invalid && med.get('frequency')?.touched" />
+                                @if (med.get('frequency')?.invalid && med.get('frequency')?.touched) {
+                                <small class="signup__error" role="alert">{{ t('signup.frequencyRequired') }}</small>
+                                }
+                            </div>
+                        </div>
+                        <div class="signup__row">
+                            <div class="signup__field">
+                                <label [for]="'med-year-' + i" class="signup__label">{{ t('signup.prescribedYear')
+                                    }}</label>
+                                <p-inputnumber [id]="'med-year-' + i" formControlName="prescribedYear"
+                                    [placeholder]="t('signup.yearPlaceholder')" [min]="1900" [max]="currentYear()"
+                                    [useGrouping]="false" styleClass="signup__input-full" />
+                                @if (med.get('prescribedYear')?.invalid && med.get('prescribedYear')?.touched) {
+                                <small class="signup__error" role="alert">{{ t('signup.yearRequired') }}</small>
+                                }
+                            </div>
+                            <div class="signup__field">
+                                <label [for]="'med-month-' + i" class="signup__label">{{ t('signup.prescribedMonth')
+                                    }}</label>
+                                <p-select [id]="'med-month-' + i" formControlName="prescribedMonth"
+                                    [options]="monthOptions" optionLabel="label" optionValue="value"
+                                    [placeholder]="t('signup.monthPlaceholder')" appendTo="body"
+                                    styleClass="signup__input-full" panelStyleClass="signup-select-panel" />
+                                @if (med.get('prescribedMonth')?.invalid && med.get('prescribedMonth')?.touched) {
+                                <small class="signup__error" role="alert">{{ t('signup.monthRequired') }}</small>
+                                }
+                            </div>
+                        </div>
+
+                        <!-- Condition: disease or allergy (required) -->
+                        <div class="signup__field signup__med-condition">
+                            <label class="signup__label">{{ t('signup.medicationForCondition') }}</label>
+                            <p-select formControlName="conditionType" [options]="medicationConditionOptions"
+                                optionLabel="label" optionValue="value"
+                                [placeholder]="t('signup.medicationConditionPlaceholder')" appendTo="body"
+                                styleClass="signup__input-full" panelStyleClass="signup-select-panel" />
+                            @if (med.get('conditionType')?.invalid && med.get('conditionType')?.touched) {
+                            <small class="signup__error" role="alert">{{ t('signup.medicationConditionRequired')
+                                }}</small>
+                            }
+                        </div>
+
+                        @if (med.get('conditionType')?.value === 'disease') {
+                        <div class="signup__med-condition-fields" formGroupName="disease">
+                            <div class="signup__field">
+                                <label [for]="'med-disease-name-' + i" class="signup__label">{{ t('signup.diseaseName')
+                                    }}</label>
+                                <input pInputText [id]="'med-disease-name-' + i" formControlName="name"
+                                    [placeholder]="t('signup.diseaseNamePlaceholder')" class="signup__input"
+                                    [class.ng-invalid-shown]="med.get('disease.name')?.invalid && med.get('disease.name')?.touched" />
+                                @if (med.get('disease')?.get('name')?.invalid &&
+                                med.get('disease')?.get('name')?.touched) {
+                                <small class="signup__error" role="alert">{{ t('signup.diseaseNameRequired') }}</small>
+                                }
+                            </div>
+                            <div class="signup__row">
+                                <div class="signup__field">
+                                    <label [for]="'med-disease-year-' + i" class="signup__label">{{
+                                        t('signup.diagnosedYear')
+                                        }}</label>
+                                    <p-inputnumber [id]="'med-disease-year-' + i" formControlName="diagnosedYear"
+                                        [placeholder]="t('signup.yearPlaceholder')" [min]="1900" [max]="currentYear()"
+                                        [useGrouping]="false" styleClass="signup__input-full" />
+                                    @if (med.get('disease')?.get('diagnosedYear')?.invalid &&
+                                    med.get('disease')?.get('diagnosedYear')?.touched) {
+                                    <small class="signup__error" role="alert">{{ t('signup.yearRequired') }}</small>
+                                    }
+                                </div>
+                                <div class="signup__field">
+                                    <label [for]="'med-disease-month-' + i" class="signup__label">{{
+                                        t('signup.diagnosedMonth')
+                                        }}</label>
+                                    <p-select [id]="'med-disease-month-' + i" formControlName="diagnosedMonth"
+                                        [options]="monthOptions" optionLabel="label" optionValue="value"
+                                        [placeholder]="t('signup.monthPlaceholder')" appendTo="body"
+                                        styleClass="signup__input-full" panelStyleClass="signup-select-panel" />
+                                    @if (med.get('disease')?.get('diagnosedMonth')?.invalid &&
+                                    med.get('disease')?.get('diagnosedMonth')?.touched) {
+                                    <small class="signup__error" role="alert">{{ t('signup.monthRequired') }}</small>
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                        }
+
+                        @if (med.get('conditionType')?.value === 'allergy') {
+                        <div class="signup__med-condition-fields" formGroupName="allergy">
+                            <div class="signup__row">
+                                <div class="signup__field">
+                                    <label [for]="'med-allergy-name-' + i" class="signup__label">{{
+                                        t('signup.allergyName')
+                                        }}</label>
+                                    <input pInputText [id]="'med-allergy-name-' + i" formControlName="name"
+                                        [placeholder]="t('signup.allergyNamePlaceholder')" class="signup__input"
+                                        [class.ng-invalid-shown]="med.get('allergy.name')?.invalid && med.get('allergy.name')?.touched" />
+                                    @if (med.get('allergy')?.get('name')?.invalid &&
+                                    med.get('allergy')?.get('name')?.touched) {
+                                    <small class="signup__error" role="alert">{{ t('signup.allergyNameRequired')
+                                        }}</small>
+                                    }
+                                </div>
+                                <div class="signup__field">
+                                    <label [for]="'med-allergy-severity-' + i" class="signup__label">{{
+                                        t('signup.severity')
+                                        }}</label>
+                                    <p-select [id]="'med-allergy-severity-' + i" formControlName="severity"
+                                        [options]="severityOptions" optionLabel="label" optionValue="value"
+                                        [placeholder]="t('signup.severityPlaceholder')" appendTo="body"
+                                        styleClass="signup__input-full" panelStyleClass="signup-select-panel" />
+                                    @if (med.get('allergy')?.get('severity')?.invalid &&
+                                    med.get('allergy')?.get('severity')?.touched) {
+                                    <small class="signup__error" role="alert">{{ t('signup.severityRequired') }}</small>
+                                    }
+                                </div>
+                            </div>
+                            <div class="signup__row">
+                                <div class="signup__field">
+                                    <label [for]="'med-allergy-year-' + i" class="signup__label">{{
+                                        t('signup.diagnosedYear')
+                                        }}</label>
+                                    <p-inputnumber [id]="'med-allergy-year-' + i" formControlName="diagnosedYear"
+                                        [placeholder]="t('signup.yearPlaceholder')" [min]="1900" [max]="currentYear()"
+                                        [useGrouping]="false" styleClass="signup__input-full" />
+                                    @if (med.get('allergy')?.get('diagnosedYear')?.invalid &&
+                                    med.get('allergy')?.get('diagnosedYear')?.touched) {
+                                    <small class="signup__error" role="alert">{{ t('signup.yearRequired') }}</small>
+                                    }
+                                </div>
+                                <div class="signup__field">
+                                    <label [for]="'med-allergy-month-' + i" class="signup__label">{{
+                                        t('signup.diagnosedMonth')
+                                        }}</label>
+                                    <p-select [id]="'med-allergy-month-' + i" formControlName="diagnosedMonth"
+                                        [options]="monthOptions" optionLabel="label" optionValue="value"
+                                        [placeholder]="t('signup.monthPlaceholder')" appendTo="body"
+                                        styleClass="signup__input-full" panelStyleClass="signup-select-panel" />
+                                    @if (med.get('allergy')?.get('diagnosedMonth')?.invalid &&
+                                    med.get('allergy')?.get('diagnosedMonth')?.touched) {
+                                    <small class="signup__error" role="alert">{{ t('signup.monthRequired') }}</small>
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                        }
+                    </div>
+                    }
+
+                    <button type="button" class="signup__add-btn" (click)="addMedication()">
+                        <i class="pi pi-plus-circle"></i>
+                        {{ t('signup.addMedication') }}
+                    </button>
+                </fieldset>
+
+                }
+
+                <!-- ═══════════════════════════════ Navigation Buttons ═══════════════════════════════ -->
+                <div class="signup__nav-buttons">
+                    @if (currentStep() > 1) {
+                    <p-button type="button" [label]="t('signup.back')" [rounded]="true" styleClass="signup__back-btn"
+                        severity="secondary" [outlined]="true" (onClick)="onBack()" />
+                    }
+                    <p-button type="submit"
+                        [label]="currentStep() < totalSteps ? t('signup.continue') : t('signup.submit')"
+                        [rounded]="true" styleClass="signup__submit" severity="success" [disabled]="false" />
+                </div>
+
+                <!-- Already have account -->
+                <p class="signup__footer-text">
+                    {{ t('signup.haveAccount') }}
+                    <a routerLink="/login" class="signup__link">{{ t('signup.signIn') }}</a>
+                </p>
+
+            </form>
+            } @else {
+            <!-- ═══════════════════════════════ OTP Verification View ═══════════════════════════════ -->
+            <div class="signup__otp-view">
+
+                <!-- Heading -->
+                <div class="signup__heading">
+                    <h1>
+                        <span class="weight-light">{{ t('signup.otpHeading1') }}</span> <em class="weight-bold">{{
+                            t('signup.otpHeading2') }}</em>
+                    </h1>
+                    @if (!otpSent()) {
+                    <p class="signup__subtitle">{{ t('signup.otpSubtitle', { email: userEmail }) }}</p>
+                    } @else {
+                    <p class="signup__subtitle">{{ t('signup.otpSentMessage', { email: userEmail }) }}</p>
+                    }
+                </div>
+
+                <!-- Email display -->
+                <div class="signup__otp-email" aria-live="polite">
+                    <i class="pi pi-envelope"></i>
+                    <span>{{ userEmail }}</span>
+                </div>
+
+                @if (!otpSent()) {
+                <!-- Send OTP -->
+                <div class="signup__nav-buttons">
+                    <p-button type="button" [label]="t('signup.otpBackToForm')" [rounded]="true"
+                        styleClass="signup__back-btn" severity="secondary" [outlined]="true" (onClick)="onBackToForm()"
+                        icon="pi pi-arrow-left" />
+                    <p-button type="button" [label]="otpSending() ? t('signup.otpSending') : t('signup.otpSendBtn')"
+                        [rounded]="true" styleClass="signup__submit" severity="success" [disabled]="otpSending()"
+                        (onClick)="onSendOtp()" icon="pi pi-send" />
+                </div>
+                } @else {
+                <!-- OTP digit inputs -->
+                <div class="signup__otp-inputs" role="group" [attr.aria-label]="t('signup.otpInputLabel')">
+                    @for (digit of otpDigits(); track $index; let i = $index) {
+                    <input #otpInput type="text" inputmode="numeric" maxlength="1" class="signup__otp-digit"
+                        [attr.aria-label]="t('signup.otpDigitLabel', { n: i + 1 })" [value]="digit"
+                        (input)="onOtpInput(i, $event)" (keydown)="onOtpKeydown(i, $event)" (paste)="onOtpPaste($event)"
+                        autocomplete="one-time-code" />
+                    }
+                </div>
+
+                <!-- Verify & Back buttons -->
+                <div class="signup__nav-buttons">
+                    <p-button type="button" [label]="t('signup.otpBackToForm')" [rounded]="true"
+                        styleClass="signup__back-btn" severity="secondary" [outlined]="true" (onClick)="onBackToForm()"
+                        icon="pi pi-arrow-left" />
+                    <p-button type="button"
+                        [label]="otpVerifying() ? t('signup.otpVerifying') : t('signup.otpVerifyBtn')" [rounded]="true"
+                        styleClass="signup__submit" severity="success" [disabled]="!otpComplete || otpVerifying()"
+                        (onClick)="onVerifyOtp()" icon="pi pi-check-circle" />
+                </div>
+
+                <!-- Resend -->
+                <p class="signup__otp-resend">
+                    {{ t('signup.otpResend') }}
+                    <button type="button" class="signup__link signup__otp-resend-btn" (click)="onSendOtp()"
+                        [disabled]="otpSending()">
+                        {{ t('signup.otpResendBtn') }}
+                    </button>
+                </p>
+                }
+
+                <!-- Error -->
+                @if (otpError()) {
+                <div class="signup__otp-error" role="alert">
+                    <i class="pi pi-exclamation-circle"></i>
+                    <span>{{ t('signup.' + otpError()) }}</span>
+                </div>
+                }
+
+                <!-- Already have account -->
+                <p class="signup__footer-text">
+                    {{ t('signup.haveAccount') }}
+                    <a routerLink="/login" class="signup__link">{{ t('signup.signIn') }}</a>
+                </p>
+
+            </div>
+            }
+        </div>
+    </main>
+
+    <!-- RIGHT: Image side -->
+    <div class="signup__image-side">
+        <div class="signup__image-overlay"></div>
+        <img src="images/signup-hero.png" alt="Doctor and patient in a modern clinic" class="signup__hero-img" />
+        <div class="signup__image-quote">
+            <blockquote>
+                <em>"{{ t('signup.imageQuote') }}"</em>
+            </blockquote>
+        </div>
+    </div>
+
+</div>

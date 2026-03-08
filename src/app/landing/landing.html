@@ -1,0 +1,236 @@
+<ng-container *transloco="let t">
+
+    <!-- ==================== NAVBAR ==================== -->
+    <nav class="navbar" [class.scrolled]="scrolled()" id="navbar">
+        <div class="navbar__inner">
+            <a href="/" class="navbar__logo">
+                <img src="logo.png" alt="TobCare" class="navbar__logo-img" width="36" height="36">
+                <span class="logo-tob">Tob</span><span class="logo-care">Care</span>
+            </a>
+
+            <div class="navbar__links">
+                <a href="#how-it-works">{{ t('nav.howItWorks') }}</a>
+                <a href="#doctors">{{ t('nav.doctors') }}</a>
+                <a href="#testimonials">{{ t('nav.testimonials') }}</a>
+            </div>
+
+            <div class="navbar__actions">
+                <button class="lang-switch" (click)="switchLang()"
+                    [attr.aria-label]="'Switch to ' + (currentLang() === 'en' ? 'Arabic' : 'English')">
+                    {{ currentLang() === 'en' ? 'عربي' : 'EN' }}
+                </button>
+                <p-button [label]="t('nav.getStarted')" [rounded]="true" styleClass="navbar__cta" severity="success"
+                    routerLink="/patient/signup" />
+            </div>
+        </div>
+    </nav>
+
+    <!-- ==================== HERO ==================== -->
+    <main id="main-content">
+    <section class="hero" id="hero">
+        <div class="hero__blobs">
+            <div class="hero__blob hero__blob--1"></div>
+            <div class="hero__blob hero__blob--2"></div>
+            <div class="hero__blob hero__blob--3"></div>
+        </div>
+
+        <div class="hero__content">
+            <h1 class="hero__headline">
+                <span class="weight-light">{{ t('hero.headline1') }}</span>
+                <em class="weight-bold">{{ t('hero.headline2') }}</em>
+                <span class="weight-light">{{ t('hero.headline3') }}</span>
+                <em class="weight-bold">{{ t('hero.headline4') }}</em>
+            </h1>
+            <p class="hero__sub">
+                {{ t('hero.sub') }}
+            </p>
+            <p-button [label]="t('hero.cta')" [rounded]="true" styleClass="hero__cta" severity="success" size="large"
+                routerLink="/patient/signup" />
+        </div>
+
+        <div class="hero__scroll-indicator">
+            <div class="hero__scroll-line"></div>
+            <span>{{ t('hero.scroll') }}</span>
+        </div>
+    </section>
+
+    <!-- ==================== STAT BREAK ==================== -->
+    <section class="stats" id="stats">
+        <div class="stats__inner">
+            <div class="stats__item">
+                <span class="stats__number">{{ t('stats.number1') }}</span>
+                <span class="stats__unit">{{ t('stats.unit') }}</span>
+                <p class="stats__label">{{ t('stats.label1') }}</p>
+            </div>
+            <div class="stats__divider">
+                <svg width="48" height="48" viewBox="0 0 48 48" fill="none" aria-hidden="true">
+                    <path d="M12 24h24M30 18l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round" />
+                </svg>
+            </div>
+            <div class="stats__item stats__item--highlight">
+                <span class="stats__number">{{ t('stats.number2') }}</span>
+                <span class="stats__unit">{{ t('stats.unit') }}</span>
+                <p class="stats__label">{{ t('stats.label2') }}</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- ==================== HOW IT WORKS ==================== -->
+    <section class="how-it-works" id="how-it-works">
+        <h2 class="section-title">
+            <span class="weight-light">{{ t('howItWorks.title1') }}</span> <em class="weight-bold">{{
+                t('howItWorks.title2') }}</em>
+        </h2>
+
+        <div class="how-it-works__steps">
+            @for (step of steps; track step.number) {
+            <div class="how-it-works__step">
+                <span class="how-it-works__step-bg">{{ step.number }}</span>
+
+                <div class="how-it-works__icon">
+                    @if (step.icon === 'search') {
+                    <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"
+                        aria-hidden="true"
+                        stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="11" cy="11" r="8" />
+                        <path d="M21 21l-4.35-4.35" />
+                    </svg>
+                    } @else if (step.icon === 'calendar') {
+                    <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"
+                        aria-hidden="true"
+                        stroke-linecap="round" stroke-linejoin="round">
+                        <rect x="3" y="4" width="18" height="18" rx="2" />
+                        <path d="M16 2v4M8 2v4M3 10h18" />
+                    </svg>
+                    } @else {
+                    <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"
+                        aria-hidden="true"
+                        stroke-linecap="round" stroke-linejoin="round">
+                        <path
+                            d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z" />
+                    </svg>
+                    }
+                </div>
+
+                <h3 class="how-it-works__step-title">{{ t(step.titleKey) }}</h3>
+                <p class="how-it-works__step-desc">{{ t(step.descKey) }}</p>
+            </div>
+            }
+        </div>
+    </section>
+
+    <!-- ==================== DOCTOR FILMSTRIP ==================== -->
+    <section class="filmstrip" id="doctors">
+        <h2 class="section-title">
+            <span class="weight-light">{{ t('filmstrip.title1') }}</span> <em class="weight-bold">{{
+                t('filmstrip.title2') }}</em>
+        </h2>
+
+        <div class="filmstrip__track">
+            @for (doc of doctors; track doc.name; let i = $index) {
+            <div class="filmstrip__card" [class.filmstrip__card--rotated]="i % 2 !== 0">
+                <div class="filmstrip__avatar">
+                    <span>{{ doc.initials }}</span>
+                </div>
+                <h4 class="filmstrip__name">{{ doc.name }}</h4>
+                <p class="filmstrip__specialty">{{ doc.specialty }}</p>
+                <div class="filmstrip__meta">
+                    <span class="filmstrip__rating">
+                        @for (star of renderStars(doc.rating); track $index) {
+                        <span class="filmstrip__star">★</span>
+                        }
+                        <span class="filmstrip__rating-num">{{ doc.rating }}</span>
+                    </span>
+                    @if (doc.available) {
+                    <span class="filmstrip__badge">{{ t('filmstrip.available') }}</span>
+                    } @else {
+                    <span class="filmstrip__badge filmstrip__badge--away">{{ t('filmstrip.booked') }}</span>
+                    }
+                </div>
+            </div>
+            }
+        </div>
+    </section>
+
+    <!-- ==================== SPLIT AUDIENCE ==================== -->
+    <section class="split" id="split">
+        <div class="split__patients">
+            <div class="split__content">
+                <h2 class="split__title">
+                    <span class="weight-light">{{ t('split.patientsTitle1') }}</span> <em class="weight-bold">{{
+                        t('split.patientsTitle2') }}</em>
+                </h2>
+                <p class="split__body">
+                    {{ t('split.patientsBody') }}
+                </p>
+                <p-button [label]="t('split.patientsCta')" [rounded]="true" styleClass="split__cta split__cta--patient"
+                    severity="success" routerLink="/patient/signup" />
+            </div>
+        </div>
+
+        <div class="split__doctors">
+            <div class="split__content">
+                <h2 class="split__title split__title--light">
+                    <span class="weight-light">{{ t('split.doctorsTitle1') }}</span> <em class="weight-bold">{{
+                        t('split.doctorsTitle2') }}</em>
+                </h2>
+                <p class="split__body split__body--light">
+                    {{ t('split.doctorsBody') }}
+                </p>
+                <p-button [label]="t('split.doctorsCta')" [rounded]="true" styleClass="split__cta split__cta--doctor"
+                    [outlined]="true" routerLink="/doctor/apply" />
+            </div>
+        </div>
+    </section>
+
+    <!-- ==================== TESTIMONIALS ==================== -->
+    <section class="testimonials" id="testimonials" aria-label="Customer testimonials">
+        <div class="testimonials__inner" aria-live="polite">
+            @for (tk of testimonialKeys; track tk.quoteKey; let i = $index) {
+            <div class="testimonials__slide" [class.active]="activeTestimonial() === i"
+                [attr.aria-hidden]="activeTestimonial() !== i">
+                <blockquote class="testimonials__quote">
+                    "{{ t(tk.quoteKey) }}"
+                </blockquote>
+                <div class="testimonials__author">
+                    <span class="testimonials__name">{{ t(tk.authorKey) }}</span>
+                    <span class="testimonials__role">{{ t(tk.roleKey) }}</span>
+                </div>
+            </div>
+            }
+
+            <div class="testimonials__dots">
+                @for (tk of testimonialKeys; track tk.quoteKey; let i = $index) {
+                <button class="testimonials__dot" [class.active]="activeTestimonial() === i" (click)="setTestimonial(i)"
+                    [attr.aria-label]="'Go to testimonial ' + (i + 1)"></button>
+                }
+            </div>
+        </div>
+    </section>
+
+    </main>
+    <!-- ==================== FOOTER ==================== -->
+    <footer class="footer" id="footer">
+        <div class="footer__inner">
+            <a href="/" class="footer__logo">
+                <span class="logo-tob">Tob</span><span class="logo-care">Care</span>
+            </a>
+            <p class="footer__tagline">
+                <em>{{ t('footer.tagline') }}</em>
+            </p>
+
+            <div class="footer__links">
+                <a href="#">{{ t('footer.about') }}</a>
+                <a href="#">{{ t('footer.privacy') }}</a>
+                <a href="#">{{ t('footer.terms') }}</a>
+                <a href="#">{{ t('footer.contact') }}</a>
+            </div>
+
+            <p class="footer__copy">
+                {{ t('footer.copy') }}
+            </p>
+        </div>
+    </footer>
+
+</ng-container>
